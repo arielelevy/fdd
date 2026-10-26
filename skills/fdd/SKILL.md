@@ -3,7 +3,7 @@ name: fdd
 description: Feature-Driven Development para agentes de IA. Una ficha por feature con nombre de resultado, mapa del dominio vivo, avance por hitos y archivos con dueño. Usar para construir o repartir una feature entre sesiones, retomar una feature de otra sesión o planear trabajo de varios frentes. Un cambio puntual y claro no la necesita.
 ---
 
-# FDD para agentes
+# FDD · Feature-Driven Development para agentes
 
 Feature-Driven Development (De Luca y Coad, 1997) organizaba equipos grandes alrededor de features
 chicas con valor para el usuario. Esta skill toma lo que le sirve a un agente que trabaja en
