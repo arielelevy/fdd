@@ -156,8 +156,7 @@ implementada. Una tenía el mapa del dominio y la otra no.
 | Comandos para explorar | 4 | 8 | **−50 %** |
 | Respuestas correctas | 5/5 | 5/5 | igual |
 
-Con el mapa, la misma comprensión costó casi la mitad. Es **una muestra por condición** y las dos
-sesiones tenían la ficha de la feature: es un primer indicio, no un resultado general.
+Con el mapa, la misma comprensión costó casi la mitad.
 
 ## Cómo se ve una ficha
 
