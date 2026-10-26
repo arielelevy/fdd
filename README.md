@@ -86,10 +86,11 @@ proceso y Coad aportó el modelado de objetos y la idea de *feature*.
 ---
 
 ```mermaid
+%%{init: {"themeVariables": {"fontSize": "22px"}}}%%
 flowchart LR
     A(["Pedido"]) --> B{"¿Puntual?"}
     B -- "sí" --> C(["Hacer y verificar"])
-    B -- "no" --> D["Constitución + mapa"]
+    B -- "no" --> D["Constitución<br/>+ mapa"]
     D --> E["Ficha"]
     E --> F[["diseñado"]]
 
@@ -104,6 +105,7 @@ flowchart LR
 ---
 
 ```mermaid
+%%{init: {"themeVariables": {"fontSize": "22px"}}}%%
 flowchart LR
     G[["implementado"]] --> H[["verificado"]]
     H -. "falta evidencia" .-> G
