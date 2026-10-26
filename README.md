@@ -48,6 +48,28 @@ del dominio compartido y el trabajo partido en features chicas con valor para el
 dueño y avance visible. Esta skill toma esas piezas, deja afuera lo que no le sirve a un agente y les
 suma la ficha y la exigencia de evidencia de FTD.
 
+<details>
+<summary><b>📜 FDD original, en un minuto</b> (la teoría completa está en <a href="docs/fdd-1997.md">docs/fdd-1997.md</a>)</summary>
+
+<br>
+
+Nació en 1997 en un proyecto de un banco de Singapur: unas 50 personas, 15 meses. De Luca armó el
+proceso y Coad aportó el modelado de objetos y la idea de *feature*.
+
+- **Feature:** función chica con valor para el cliente, nombrada «\<acción\> el \<resultado\> de un
+  \<objeto\>» («calcular el total de una venta»), de dos semanas como máximo.
+- **Cinco procesos:** (1) desarrollar un modelo general, (2) construir la lista de features,
+  (3) planificar por feature, una vez cada uno; (4) diseñar por feature y (5) construir por feature,
+  en iteraciones.
+- **Seis hitos con peso:** recorrido del dominio 1 %, diseño 40 %, inspección del diseño 3 %,
+  código 45 %, inspección del código 10 %, promoción al build 1 %. El avance se cuenta, no se estima.
+- **Roles:** arquitecto jefe, programadores jefe que arman equipos por feature, dueños de clase
+  (sólo el dueño toca su clase) y expertos del dominio.
+- **Prácticas:** modelado del dominio, desarrollo por feature, propiedad de clases, inspecciones,
+  builds regulares y avance visible para todos (el diagrama de estacionamiento).
+
+</details>
+
 | | Pieza | Qué resuelve |
 |---|---|---|
 | ⚖️ | **Constitución** | Las reglas que ninguna feature rompe (`AGENTS.md`, decisiones, contratos). FDD trabaja dentro de ellas y no pide otro archivo |
@@ -171,8 +193,10 @@ desde su archivo de reglas (`AGENTS.md`, `.cursorrules`, etc.).
 
 ## Créditos
 
-- **Feature-Driven Development:** Jeff De Luca y Peter Coad (1997). Stephen Palmer y John Felsing,
-  *A Practical Guide to Feature-Driven Development* (2002).
+- **Feature-Driven Development:** Jeff De Luca y Peter Coad (1997); Coad, Lefebvre y De Luca,
+  *Java Modeling in Color with UML* (1999); Stephen Palmer y John Felsing, *A Practical Guide to
+  Feature-Driven Development* (2002). Resumen y correspondencia con esta skill en
+  [docs/fdd-1997.md](docs/fdd-1997.md).
 - **FTD (Fast-Track Development)**, de donde vienen la ficha, la constitución y la exigencia de
   evidencia: [RSC harness](https://github.com/ericrisco/rsc-harness), de `ericrisco`, licencia MIT.
 - Probado en [Lienzo](https://github.com/arielelevy/lienzo), un tablero para coordinar varios agentes
