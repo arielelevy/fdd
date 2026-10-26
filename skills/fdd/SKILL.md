@@ -1,6 +1,6 @@
 ---
 name: fdd
-description: Feature-Driven Development para agentes de IA. Una ficha por feature con nombre de resultado, mapa del dominio vivo, avance por hitos y archivos con dueño. Usar para construir o repartir una feature entre sesiones, retomar una feature de otra sesión o planear trabajo de varios frentes. Un cambio puntual y claro no la necesita.
+description: Feature-Driven Development para agentes de IA. Una ficha por feature con nombre de resultado, dentro de la constitución del proyecto, con mapa del dominio vivo, avance por hitos y archivos con dueño. Usar para construir o repartir una feature entre sesiones, retomar una feature de otra sesión o planear trabajo de varios frentes. Un cambio puntual y claro no la necesita.
 ---
 
 # FDD · Feature-Driven Development para agentes
@@ -14,7 +14,20 @@ La regla de fondo: **la fricción es proporcional al riesgo.** Una pregunta o un
 claro se hacen y se verifican directo. La ficha es para lo que tiene varias decisiones, se reparte
 entre sesiones o hay que poder retomar.
 
-## 1. Mapa del dominio
+## 1. La constitución
+
+Las reglas duraderas del proyecto, que ninguna feature rompe: las instrucciones del usuario, el
+`AGENTS.md` (o `CLAUDE.md`, `.cursorrules`) del repo, las decisiones de producto ya tomadas y los
+contratos técnicos vigentes (APIs, formatos, invariantes).
+
+- FDD trabaja **dentro** de la constitución. No exige crear otro archivo: si esas reglas ya existen,
+  la constitución son ellas. Si no hay ninguna escrita, la primera ficha anota en `docs/dominio.md`,
+  sección «Reglas que no se rompen», las que encontró en el código.
+- Antes de diseñar, la ficha dice qué reglas de la constitución toca. Si la feature choca con una, se
+  resuelve con la persona responsable **antes** de implementar, no después.
+- Una decisión nueva que tiene que durar (un contrato, una regla de calidad) se incorpora a la
+  constitución al integrar la feature, no queda sólo en la ficha.
+## 2. Mapa del dominio
 
 Un archivo por proyecto, `docs/dominio.md`, que se lee antes de abrir una ficha:
 
@@ -37,7 +50,7 @@ Actualizado: <fecha> (<commit>)
 - Si no existe, la primera ficha del proyecto lo crea con lo que ya se leyó para la feature, no con
   un relevamiento aparte.
 
-## 2. La feature
+## 3. La feature
 
 Nombre de resultado: **acción + resultado + objeto**, del lado del usuario.
 
@@ -46,7 +59,7 @@ Nombre de resultado: **acción + resultado + objeto**, del lado del usuario.
 
 Si no entra en una frase así, son varias features: una ficha cada una.
 
-## 3. La ficha
+## 4. La ficha
 
 Una por feature. Si ya hay una que contiene el encargo, se usa esa.
 
@@ -64,8 +77,9 @@ Qué incluye y qué queda afuera.
 ## Criterios de aceptación
 Comportamientos observables y cómo comprobarlos.
 
-## Dominio
-Entidades y flujos de `docs/dominio.md` que toca. Si cambia alguno, qué cambia.
+## Dominio y constitución
+Entidades y flujos de `docs/dominio.md` que toca, y reglas de la constitución que la afectan.
+Si cambia alguno, qué cambia.
 
 ## Archivos y dueños
 - `<ruta>`: <sesión o frente dueño>. Nadie más lo edita mientras la ficha esté abierta.
@@ -86,11 +100,11 @@ Una acción concreta para quien retome.
   otra metodología.
 - No se crea otro backlog: la ficha enlaza el pendiente de la lista que el proyecto ya tenga.
 
-## 4. Hitos
+## 5. Hitos
 
 | Hito | Se marca cuando |
 |---|---|
-| diseñado | objetivo, alcance, criterios, dominio y dueños escritos |
+| diseñado | objetivo, alcance, criterios, dominio, constitución y dueños escritos |
 | implementado | el cambio está hecho en el árbol o en una rama |
 | verificado | cada criterio tiene evidencia observada, no afirmada |
 | integrado | **lo marca una persona**, nunca el agente |
@@ -98,7 +112,7 @@ Una acción concreta para quien retome.
 - Un turno terminado, un test aislado o un merge no mueven un hito solos.
 - Lo que se afirma sin evidencia cuenta como no hecho.
 
-## 5. Varios frentes
+## 6. Varios frentes
 
 - Cada frente tiene archivos disjuntos, escritos en la ficha antes de empezar. Si dos fichas abiertas
   nombran el mismo archivo, se resuelve antes de repartir.
