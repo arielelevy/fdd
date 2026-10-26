@@ -4,8 +4,8 @@
 > agent that reads Markdown skills). One feature card per feature, a living domain map, milestone-based
 > progress and file ownership, so another session can pick the work up without the chat.
 
-**Estado: borrador en piloto.** Se está probando en una feature real de
-[Lienzo](https://github.com/arielelevy/lienzo) antes de la versión 1.
+**Estado: v0.1, probada en un piloto.** Se usa en [Lienzo](https://github.com/arielelevy/lienzo);
+ver [lo medido](#lo-medido).
 
 ---
 
@@ -110,6 +110,23 @@ desde su archivo de reglas (`AGENTS.md`, `.cursorrules`, etc.).
 - La primera ficha del proyecto crea `docs/dominio.md` con lo que el agente ya leyó para esa feature;
   no hace falta un relevamiento previo.
 - Para retomar, la sesión nueva lee el mapa y la ficha, y sigue desde **Próximo paso**.
+
+## Lo medido
+
+Piloto en Lienzo (2026-10-26): dos sesiones nuevas de Codex (mismo modelo, de a una) contestaron las
+mismas cinco preguntas para retomar una feature ya implementada, una con el mapa del dominio y otra
+sin él.
+
+| | con mapa | sin mapa |
+|---|---|---|
+| Tokens de entrada | 161.510 | 281.865 |
+| Tokens nuevos (sin caché) | 24.934 | 56.073 |
+| Comandos para explorar | 4 | 8 |
+| Respuestas correctas | 5/5 | 5/5 |
+
+Con el mapa, la misma comprensión costó un 43 % menos de tokens de entrada y la mitad de
+exploración. Es una muestra por condición, y las dos sesiones tenían la ficha de la feature: es un
+primer indicio, no un resultado general.
 
 ## Qué no es
 
