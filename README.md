@@ -79,6 +79,41 @@ proceso y Coad aportó el modelado de objetos y la idea de *feature*.
 | 🚦 | **Hitos**: diseñado → implementado → verificado → integrado | Se distingue lo propuesto de lo hecho y de lo integrado |
 | 🔑 | **Archivos con dueño** | Dos agentes no editan lo mismo; los choques se ven antes de repartir |
 
+## El flujo
+
+```mermaid
+flowchart TD
+    A(["Pedido"]) --> B{"¿Cambio puntual<br/>y claro?"}
+    B -- "sí" --> C["Hacer y verificar directo"]
+    C --> C2(["Evidencia en el registro<br/>que ya existe"])
+    B -- "no" --> D["Leer la constitución<br/>y el mapa del dominio"]
+    D --> E["Ficha: nombre de resultado, alcance,<br/>criterios, archivos con dueño"]
+    E --> G{"¿Choca con la<br/>constitución?"}
+    G -- "sí" --> H["Resolver con la persona<br/>responsable"]
+    H --> E
+    G -- "no" --> F[["Hito 1 · diseñado"]]
+    F --> I["Implementar"]
+    I --> J[["Hito 2 · implementado"]]
+    J --> K{"¿Cada criterio con<br/>evidencia observada?"}
+    K -- "falta" --> I
+    K -- "sí" --> L[["Hito 3 · verificado"]]
+    L --> M{"Revisión de<br/>una persona"}
+    M -- "pide cambios" --> I
+    M -- "aprueba" --> N[["Hito 4 · integrado"]]
+    N --> O(["Actualizar el mapa y la constitución<br/>si la feature los cambió"])
+
+    classDef hito fill:#1a7f37,stroke:#1a7f37,color:#ffffff
+    classDef humano fill:#cf222e,stroke:#cf222e,color:#ffffff
+    classDef decision fill:#fff8c5,stroke:#9a6700,color:#1f2328
+    class F,J,L hito
+    class M,N humano
+    class B,G,K decision
+```
+
+En verde, los hitos que se alcanzan con evidencia; en rojo, lo que decide una persona. Un cambio
+puntual no abre ficha: se hace, se verifica y deja su evidencia donde el proyecto ya la registra. Si
+una feature crece en el camino, se amplía la misma ficha; no se cambia de método.
+
 Dos reglas atraviesan todo:
 
 1. **La fricción es proporcional al riesgo.** Una pregunta o un cambio puntual claro se hacen y se
@@ -91,11 +126,6 @@ Dos reglas atraviesan todo:
 Piloto en [Lienzo](https://github.com/arielelevy/lienzo) (2026-10-26): dos sesiones nuevas de Codex,
 con el mismo modelo y de a una, contestaron las mismas cinco preguntas para retomar una feature ya
 implementada. Una tenía el mapa del dominio y la otra no.
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/img/fdd-medicion-dark.svg">
-  <img alt="Dos pilas de hojas: con mapa, 161.510 tokens de entrada; sin mapa, 281.865. La parte ámbar de arriba son los tokens sin caché. Delante, 4 contra 8 comandos de exploración y cinco lámparas verdes en cada una: las dos acertaron todo." src="docs/img/fdd-medicion-light.svg">
-</picture>
 
 | | 🗺️ con mapa | sin mapa | diferencia |
 |---|---:|---:|---:|
