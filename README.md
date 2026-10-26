@@ -81,34 +81,40 @@ proceso y Coad aportó el modelado de objetos y la idea de *feature*.
 
 ## El flujo
 
+### 1 · Antes de construir
+
+---
+
 ```mermaid
-flowchart TB
-    subgraph S1["Antes de construir"]
-        direction LR
-        A(["Pedido"]) --> B{"¿Puntual?"}
-        B -- "sí" --> C(["Hacer y<br/>verificar"])
-        B -- "no" --> D["Constitución<br/>+ mapa"]
-        D --> E["Ficha"]
-        E --> F[["diseñado"]]
-    end
-    subgraph S2["Construir y cerrar"]
-        direction LR
-        G[["implementado"]] --> H[["verificado"]]
-        H -. "falta<br/>evidencia" .-> G
-        H --> I{"Revisa una<br/>persona"}
-        I -. "cambios" .-> G
-        I --> J[["integrado"]]
-    end
-    S1 --> S2
+flowchart LR
+    A(["Pedido"]) --> B{"¿Puntual?"}
+    B -- "sí" --> C(["Hacer y verificar"])
+    B -- "no" --> D["Constitución + mapa"]
+    D --> E["Ficha"]
+    E --> F[["diseñado"]]
+
+    classDef hito fill:#1a7f37,stroke:#1a7f37,color:#ffffff
+    classDef decision fill:#fff8c5,stroke:#9a6700,color:#1f2328
+    class F hito
+    class B decision
+```
+
+### 2 · Construir y cerrar
+
+---
+
+```mermaid
+flowchart LR
+    G[["implementado"]] --> H[["verificado"]]
+    H -. "falta evidencia" .-> G
+    H --> I{"Revisa una<br/>persona"}
+    I -. "cambios" .-> G
+    I --> J[["integrado"]]
 
     classDef hito fill:#1a7f37,stroke:#1a7f37,color:#ffffff
     classDef humano fill:#cf222e,stroke:#cf222e,color:#ffffff
-    classDef decision fill:#fff8c5,stroke:#9a6700,color:#1f2328
-    class F,G,H hito
+    class G,H hito
     class I,J humano
-    class B decision
-    style S1 fill:none,stroke:#8c959f,stroke-dasharray:4 4
-    style S2 fill:none,stroke:#8c959f,stroke-dasharray:4 4
 ```
 
 En verde, los hitos que se alcanzan con evidencia; en rojo, lo que decide una persona. Un cambio
