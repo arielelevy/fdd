@@ -82,18 +82,24 @@ proceso y Coad aportó el modelado de objetos y la idea de *feature*.
 ## El flujo
 
 ```mermaid
-flowchart LR
-    A(["Pedido"]) --> B{"¿Puntual?"}
-    B -- "sí" --> C(["Hacer y verificar"])
-    B -- "no" --> D["Constitución<br/>+ mapa"]
-    D --> E["Ficha"]
-    E --> F[["diseñado"]]
-    F --> G[["implementado"]]
-    G --> H[["verificado"]]
-    H -. "falta evidencia" .-> G
-    H --> I{"Revisa<br/>una persona"}
-    I -. "cambios" .-> G
-    I --> J[["integrado"]]
+flowchart TB
+    subgraph S1["Antes de construir"]
+        direction LR
+        A(["Pedido"]) --> B{"¿Puntual?"}
+        B -- "sí" --> C(["Hacer y<br/>verificar"])
+        B -- "no" --> D["Constitución<br/>+ mapa"]
+        D --> E["Ficha"]
+        E --> F[["diseñado"]]
+    end
+    subgraph S2["Construir y cerrar"]
+        direction LR
+        G[["implementado"]] --> H[["verificado"]]
+        H -. "falta<br/>evidencia" .-> G
+        H --> I{"Revisa una<br/>persona"}
+        I -. "cambios" .-> G
+        I --> J[["integrado"]]
+    end
+    S1 --> S2
 
     classDef hito fill:#1a7f37,stroke:#1a7f37,color:#ffffff
     classDef humano fill:#cf222e,stroke:#cf222e,color:#ffffff
@@ -101,8 +107,7 @@ flowchart LR
     class F,G,H hito
     class I,J humano
     class B decision
-```
-En verde, los hitos que se alcanzan con evidencia; en rojo, lo que decide una persona. Un cambio
+```En verde, los hitos que se alcanzan con evidencia; en rojo, lo que decide una persona. Un cambio
 puntual no abre ficha. Si la ficha choca con la constitución, se resuelve con la persona responsable
 antes de implementar; si la feature crece, se amplía la misma ficha. Al integrar, se actualizan el
 mapa y la constitución si la feature los cambió.
