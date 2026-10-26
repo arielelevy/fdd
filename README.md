@@ -82,37 +82,30 @@ proceso y Coad aportó el modelado de objetos y la idea de *feature*.
 ## El flujo
 
 ```mermaid
-flowchart TD
-    A(["Pedido"]) --> B{"¿Cambio puntual<br/>y claro?"}
-    B -- "sí" --> C["Hacer y verificar directo"]
-    C --> C2(["Evidencia en el registro<br/>que ya existe"])
-    B -- "no" --> D["Leer la constitución<br/>y el mapa del dominio"]
-    D --> E["Ficha: nombre de resultado, alcance,<br/>criterios, archivos con dueño"]
-    E --> G{"¿Choca con la<br/>constitución?"}
-    G -- "sí" --> H["Resolver con la persona<br/>responsable"]
-    H --> E
-    G -- "no" --> F[["Hito 1 · diseñado"]]
-    F --> I["Implementar"]
-    I --> J[["Hito 2 · implementado"]]
-    J --> K{"¿Cada criterio con<br/>evidencia observada?"}
-    K -- "falta" --> I
-    K -- "sí" --> L[["Hito 3 · verificado"]]
-    L --> M{"Revisión de<br/>una persona"}
-    M -- "pide cambios" --> I
-    M -- "aprueba" --> N[["Hito 4 · integrado"]]
-    N --> O(["Actualizar el mapa y la constitución<br/>si la feature los cambió"])
+flowchart LR
+    A(["Pedido"]) --> B{"¿Puntual?"}
+    B -- "sí" --> C(["Hacer y verificar"])
+    B -- "no" --> D["Constitución<br/>+ mapa"]
+    D --> E["Ficha"]
+    E --> F[["diseñado"]]
+    F --> G[["implementado"]]
+    G --> H[["verificado"]]
+    H -. "falta evidencia" .-> G
+    H --> I{"Revisa<br/>una persona"}
+    I -. "cambios" .-> G
+    I --> J[["integrado"]]
 
     classDef hito fill:#1a7f37,stroke:#1a7f37,color:#ffffff
     classDef humano fill:#cf222e,stroke:#cf222e,color:#ffffff
     classDef decision fill:#fff8c5,stroke:#9a6700,color:#1f2328
-    class F,J,L hito
-    class M,N humano
-    class B,G,K decision
+    class F,G,H hito
+    class I,J humano
+    class B decision
 ```
-
 En verde, los hitos que se alcanzan con evidencia; en rojo, lo que decide una persona. Un cambio
-puntual no abre ficha: se hace, se verifica y deja su evidencia donde el proyecto ya la registra. Si
-una feature crece en el camino, se amplía la misma ficha; no se cambia de método.
+puntual no abre ficha. Si la ficha choca con la constitución, se resuelve con la persona responsable
+antes de implementar; si la feature crece, se amplía la misma ficha. Al integrar, se actualizan el
+mapa y la constitución si la feature los cambió.
 
 Dos reglas atraviesan todo:
 
