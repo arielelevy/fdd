@@ -107,7 +107,9 @@ flowchart TB
     class F,G,H hito
     class I,J humano
     class B decision
-```En verde, los hitos que se alcanzan con evidencia; en rojo, lo que decide una persona. Un cambio
+```
+
+En verde, los hitos que se alcanzan con evidencia; en rojo, lo que decide una persona. Un cambio
 puntual no abre ficha. Si la ficha choca con la constitución, se resuelve con la persona responsable
 antes de implementar; si la feature crece, se amplía la misma ficha. Al integrar, se actualizan el
 mapa y la constitución si la feature los cambió.
