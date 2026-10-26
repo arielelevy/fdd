@@ -1,6 +1,6 @@
 ---
 name: fdd
-description: Feature-Driven Development para agentes de IA. Una ficha por feature con nombre de resultado, dentro de la constitución del proyecto, con mapa del dominio vivo, avance por hitos y archivos con dueño. Usar para construir o repartir una feature entre sesiones, retomar una feature de otra sesión o planear trabajo de varios frentes. Un cambio puntual y claro no la necesita.
+description: Feature-Driven Development para agentes de IA. Una ficha por feature con nombre de resultado, dentro de la constitución y la arquitectura del proyecto (que ningún cambio rompe, ni el más chico), con mapa del dominio vivo, avance por hitos y archivos con dueño. Usar para construir o repartir una feature entre sesiones, retomar una feature de otra sesión o planear trabajo de varios frentes. Un cambio puntual y claro no necesita ficha, pero tampoco se sale de la constitución ni de la arquitectura.
 ---
 
 # FDD · Feature-Driven Development para agentes
@@ -10,23 +10,46 @@ chicas con valor para el usuario. Esta skill toma lo que le sirve a un agente qu
 sesiones cortas y que otra sesión tiene que poder retomar sin el chat. La ficha y la evidencia
 vienen de FTD (Fast-Track Development) de [RSC](https://github.com/ericrisco/rsc-harness).
 
-La regla de fondo: **la fricción es proporcional al riesgo.** Una pregunta o un cambio puntual
-claro se hacen y se verifican directo. La ficha es para lo que tiene varias decisiones, se reparte
-entre sesiones o hay que poder retomar.
+Dos reglas de fondo:
 
-## 1. La constitución
+1. **Nada se sale de la constitución ni de la arquitectura**, por chico que sea el cambio. Un cambio
+   puntual se salta la ficha, nunca estas reglas.
+2. **La fricción es proporcional al riesgo.** Una pregunta o un cambio puntual claro se hacen y se
+   verifican directo. La ficha es para lo que tiene varias decisiones, se reparte entre sesiones o hay
+   que poder retomar.
 
-Las reglas duraderas del proyecto, que ninguna feature rompe: las instrucciones del usuario, el
+## 1. Constitución y arquitectura
+
+**La constitución** son las reglas duraderas del proyecto: las instrucciones del usuario, el
 `AGENTS.md` (o `CLAUDE.md`, `.cursorrules`) del repo, las decisiones de producto ya tomadas y los
 contratos técnicos vigentes (APIs, formatos, invariantes).
 
-- FDD trabaja **dentro** de la constitución. No exige crear otro archivo: si esas reglas ya existen,
-  la constitución son ellas. Si no hay ninguna escrita, la primera ficha anota en `docs/dominio.md`,
-  sección «Reglas que no se rompen», las que encontró en el código.
-- Antes de diseñar, la ficha dice qué reglas de la constitución toca. Si la feature choca con una, se
-  resuelve con la persona responsable **antes** de implementar, no después.
-- Una decisión nueva que tiene que durar (un contrato, una regla de calidad) se incorpora a la
-  constitución al integrar la feature, no queda sólo en la ficha.
+**La arquitectura** es cómo está hecho: las capas y módulos, la base de datos, la autenticación, el
+manejo de errores, el logging, la configuración, las librerías elegidas y los componentes que ya
+existen para cada cosa.
+
+Valen para **todo** cambio, con ficha o sin ella. Un cambio de tres líneas también se sale si:
+
+- mete una **base de datos** o un almacenamiento que no es el de la app;
+- autentica o autoriza con **otro método** que el de la app;
+- trae una **librería nueva** para algo que una de las que ya están resuelve;
+- **no reusa** lo que la app ya tiene (un cliente HTTP, un helper, un componente, un patrón de
+  acceso a datos) y escribe otro paralelo;
+- saltea una capa (la vista que consulta la base directo, el handler que arma SQL).
+
+Cómo se aplica:
+
+- **Reusar antes de agregar.** Antes de escribir algo, buscar en el repo si ya existe; si existe, se usa.
+- FDD trabaja **dentro** de ellas. No exige crear otro archivo: si esas reglas ya están escritas, son
+  ellas. Si no hay nada escrito, la primera ficha anota en `docs/dominio.md`, sección «Reglas que no
+  se rompen», las que encontró en el código (qué base, qué autenticación, qué capas).
+- Antes de diseñar, la ficha dice qué reglas y qué partes de la arquitectura toca.
+- **Salirse es una decisión de la persona responsable, antes de implementar.** El agente propone,
+  explica por qué lo existente no alcanza y espera; no lo hace y avisa después.
+- Una decisión nueva que tiene que durar (un contrato, una regla de calidad, un cambio de
+  arquitectura aprobado) se incorpora a la constitución o a la arquitectura al integrar, no queda sólo
+  en la ficha.
+
 ## 2. Mapa del dominio
 
 Un archivo por proyecto, `docs/dominio.md`, que se lee antes de abrir una ficha:
@@ -77,8 +100,9 @@ Qué incluye y qué queda afuera.
 ## Criterios de aceptación
 Comportamientos observables y cómo comprobarlos.
 
-## Dominio y constitución
-Entidades y flujos de `docs/dominio.md` que toca, y reglas de la constitución que la afectan.
+## Dominio, constitución y arquitectura
+Entidades y flujos de `docs/dominio.md` que toca, reglas de la constitución que la afectan y partes de
+la arquitectura que reusa (base, autenticación, componentes).
 Si cambia alguno, qué cambia.
 
 ## Archivos y dueños
@@ -104,7 +128,7 @@ Una acción concreta para quien retome.
 
 | Hito | Se marca cuando |
 |---|---|
-| diseñado | objetivo, alcance, criterios, dominio, constitución y dueños escritos |
+| diseñado | objetivo, alcance, criterios, dominio, constitución, arquitectura y dueños escritos |
 | implementado | el cambio está hecho en el árbol o en una rama |
 | verificado | cada criterio tiene evidencia observada, no afirmada |
 | integrado | **lo marca una persona**, nunca el agente |

@@ -72,7 +72,7 @@ proceso y Coad aportó el modelado de objetos y la idea de *feature*.
 
 | | Pieza | Qué resuelve |
 |---|---|---|
-| ⚖️ | **Constitución** | Las reglas que ninguna feature rompe (`AGENTS.md`, decisiones, contratos). FDD trabaja dentro de ellas y no pide otro archivo |
+| ⚖️ | **Constitución y arquitectura** | Las reglas y la estructura que ningún cambio rompe, ni el más chico (`AGENTS.md`, decisiones, contratos, capas y patrones). FDD trabaja dentro de ellas y no pide otro archivo |
 | 🗺️ | **Mapa del dominio** (`docs/dominio.md`) | La sesión nueva sabe qué entidades hay y dónde vive cada una sin explorar el repo |
 | 🏷️ | **Feature con nombre de resultado** | «avisar cuando una regla queda apagada», no «arreglar rules.py»: se entiende sola |
 | 🗂️ | **Una ficha por feature** | Objetivo, alcance, criterios, dominio, archivos, decisiones, evidencia y próximo paso en un lugar |
@@ -88,15 +88,18 @@ proceso y Coad aportó el modelado de objetos y la idea de *feature*.
 ```mermaid
 %%{init: {"themeVariables": {"fontSize": "22px"}}}%%
 flowchart LR
-    A(["Pedido"]) --> B{"¿Puntual?"}
+    A(["Pedido"]) --> K["Constitución<br/>y arquitectura"]
+    K --> B{"¿Puntual?"}
     B -- "sí" --> C(["Hacer y verificar"])
-    B -- "no" --> D["Constitución<br/>+ mapa"]
+    B -- "no" --> D["Mapa del<br/>dominio"]
     D --> E["Ficha"]
     E --> F[["diseñado"]]
 
     classDef hito fill:#1a7f37,stroke:#1a7f37,color:#ffffff
     classDef decision fill:#fff8c5,stroke:#9a6700,color:#1f2328
     class F hito
+    classDef regla fill:#ddf4ff,stroke:#0969da,color:#1f2328
+    class K regla
     class B decision
 ```
 
@@ -119,17 +122,26 @@ flowchart LR
     class I,J humano
 ```
 
-En verde, los hitos que se alcanzan con evidencia; en rojo, lo que decide una persona. Un cambio
-puntual no abre ficha. Si la ficha choca con la constitución, se resuelve con la persona responsable
-antes de implementar; si la feature crece, se amplía la misma ficha. Al integrar, se actualizan el
-mapa y la constitución si la feature los cambió.
+En azul, la regla que vale para todo; en verde, los hitos que se alcanzan con evidencia; en rojo,
+lo que decide una persona. Un cambio puntual no abre ficha, pero tampoco se sale de la constitución ni
+de la arquitectura. Si un cambio necesita salirse, se resuelve con la persona responsable antes de
+implementar; si la feature crece, se amplía la misma ficha. Al integrar, se actualizan el mapa, la
+constitución y la arquitectura si la feature los cambió.
 
-Dos reglas atraviesan todo:
+Tres reglas atraviesan todo:
 
-1. **La fricción es proporcional al riesgo.** Una pregunta o un cambio puntual claro se hacen y se
-   verifican directo, sin ficha.
-2. **Lo que se afirma sin evidencia cuenta como no hecho.** Y el último hito, *integrado*, lo marca
+1. **Nada se sale de la constitución ni de la arquitectura**, por chico que sea el cambio. Salirse es
+   una decisión de la persona responsable, tomada antes de implementar.
+2. **La fricción es proporcional al riesgo.** Una pregunta o un cambio puntual claro se hacen y se
+   verifican directo, sin ficha, dentro de esas reglas.
+3. **Lo que se afirma sin evidencia cuenta como no hecho.** Y el último hito, *integrado*, lo marca
    una persona, nunca el agente.
+
+> [!IMPORTANT]
+> Un cambio de tres líneas también se sale de la arquitectura si mete una **base de datos** que no es
+> la de la app, **autentica** con otro método, trae una **librería** para algo que ya está resuelto o
+> **no reusa** lo que la app ya tiene y escribe uno paralelo. Reusar antes de agregar; y si lo existente
+> no alcanza, el agente lo propone y espera la decisión, no lo hace y avisa después.
 
 ## Lo medido
 
@@ -164,9 +176,9 @@ Queda afuera: dejar de retener informes sin integrar (es a propósito).
 ## Criterios de aceptación
 1. DELETE /rules/<id> con informes pendientes responde desactivada y la lista. Prueba HTTP.
 
-## Dominio y constitución
+## Dominio, constitución y arquitectura
 Regla, Informe, flujo «Borrar una regla». Regla que no se rompe: un informe no pasa a
-integrado sin acuse de la sesión destino.
+integrado sin acuse de la sesión destino. Reusa rules.json y la API de reglas existente.
 
 ## Archivos y dueños
 - lienzo/rules.py, lienzo/server.py: frente server.
