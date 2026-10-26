@@ -107,6 +107,8 @@ flowchart TB
     class F,G,H hito
     class I,J humano
     class B decision
+    style S1 fill:none,stroke:#8c959f,stroke-dasharray:4 4
+    style S2 fill:none,stroke:#8c959f,stroke-dasharray:4 4
 ```
 
 En verde, los hitos que se alcanzan con evidencia; en rojo, lo que decide una persona. Un cambio
