@@ -50,6 +50,27 @@ Cómo se aplica:
   arquitectura aprobado) se incorpora a la constitución o a la arquitectura al integrar, no queda sólo
   en la ficha.
 
+### Decisiones de diseño cerradas
+
+Las decisiones de diseño tomadas se escriben en una tabla en el `AGENTS.md` (o el índice de docs) y
+**no se reabren**: ni el agente ni un frente las rediscute por su cuenta.
+
+```markdown
+| Tema | Decisión | Por qué |
+|---|---|---|
+| Base | PostgreSQL en contenedor, local y producción | mismo motor en los dos ambientes |
+| Autenticación | JWT + refresh, roles | lo que ya usa el panel |
+```
+
+- Los **invariantes con una sola puerta** se nombran: «`pagos.aprobar` es la única puerta a un pago
+  aprobado». Nada llega a ese estado por otro camino, y una excepción se agrega sólo con decisión
+  escrita.
+- **El doc manda antes que el código.** Si el código va a contradecir una decisión o un doc, primero se
+  corrige el doc (y se avisa); nunca queda el código diciendo una cosa y el doc otra.
+- **Verificar en vivo antes de afirmar** que algo existe (un recurso en la nube, una cuenta, un
+  endpoint). Con la credencial o la cuenta equivocada, muchas APIs contestan 200 y vacío.
+- **Lo irreversible se propone y espera**: dinero real, credenciales productivas, DNS, borrar datos.
+
 ## 2. Mapa del dominio
 
 Un archivo por proyecto, `docs/dominio.md`, que se lee antes de abrir una ficha:
@@ -108,6 +129,13 @@ Si cambia alguno, qué cambia.
 ## Archivos y dueños
 - `<ruta>`: <sesión o frente dueño>. Nadie más lo edita mientras la ficha esté abierta.
 
+## Maqueta
+Si la feature es visual: enlace a la maqueta aprobada (ver sección 5).
+
+## Olas
+| Ola | Termina con (criterio observable) | Pruebas que la cierran | Depende de | Estado |
+|---|---|---|---|---|
+
 ## Trabajo y decisiones
 Tareas, dependencias y decisiones tomadas con su motivo.
 
@@ -128,11 +156,49 @@ Una acción concreta para quien retome.
   otra metodología.
 - No se crea otro backlog: la ficha enlaza el pendiente de la lista que el proyecto ya tenga.
 
-## 5. Hitos
+## 5. Maqueta primero (apps visuales)
+
+Si la aplicación tiene pantallas, **antes del código va una maqueta**, independiente del código de la
+app: HTML estático con su CSS en `maqueta/`, una imagen o un diseño. Los agentes trabajan mejor cuando
+dibujan primero: la maqueta fija qué se ve, en qué orden y con qué textos, y la persona responsable la
+aprueba sin leer código.
+
+- Es una **referencia de diseño, no el frontend**: no se importa ni se reusa como código.
+- Usa la identidad visual que ya existe (colores, tipografías, componentes del sitio o del sistema de
+  diseño), no una inventada.
+- Se prueba como se va a usar: en el ancho de un celular si la usan desde el celular.
+- La ficha la enlaza, y los criterios de aceptación visuales se comprueban contra ella.
+
+## 6. El plan en olas
+
+Una feature grande se construye en **olas** (fases cortas), en orden, y cada una termina con algo que
+se puede probar. Así se construyó de punta a punta un sistema de cobros en producción: cada ola cerrada y probada antes
+de abrir la siguiente.
+
+- **Cada ola tiene un criterio de aceptación observable**, del lado del usuario: «desde el celular,
+  buscar un DNI de prueba, elegir cuotas y ver los datos para transferir», no «terminar el servicio de
+  cuotas».
+- **La prueba va antes que el código.** Los casos críticos de la ola se numeran y se escriben primero;
+  la ola no se cierra sin ellos en verde, con la suite completa, no sólo los suyos.
+- **Las dependencias entre olas van en una tabla** (ola, esfuerzo, depende de). Lo que bloquea
+  producción pero no el desarrollo (credenciales, definiciones del cliente) es una ola 0 que corre en
+  paralelo; mientras tanto se trabaja con valores de ejemplo.
+- **Cada ola cierra con revisión de código y una nota de estado** (qué quedó, qué falta, qué se
+  decidió). Nada se marca hecho hasta que la persona responsable lo indique.
+- Dentro de una ola, los frentes que no comparten archivos corren **en paralelo** (sección 8).
+- Lo que bloquea una ola de producción (dinero real, DNS, credenciales) va al final y espera confirmación.
+
+### Estado para retomar
+
+En un proyecto con varias olas o features, `docs/estado.md` es **lo primero que se lee al retomar**:
+una tabla con cada ola y su estado (hecho en local, desplegado, falta…), lo que se agregó fuera del
+plan, la suite al cierre y las decisiones de cada ronda con su fecha. Lo mantiene sólo la coordinadora.
+
+## 7. Hitos
 
 | Hito | Se marca cuando |
 |---|---|
-| diseñado | objetivo, alcance, criterios, dominio, constitución, arquitectura y dueños escritos |
+| diseñado | objetivo, alcance, criterios, dominio, constitución, arquitectura, dueños, olas y (si es visual) maqueta aprobada |
 | implementado | el cambio está hecho en el árbol o en una rama |
 | verificado | cada criterio tiene evidencia observada, no afirmada |
 | integrado | **lo marca una persona**, nunca el agente |
@@ -140,15 +206,31 @@ Una acción concreta para quien retome.
 - Un turno terminado, un test aislado o un merge no mueven un hito solos.
 - Lo que se afirma sin evidencia cuenta como no hecho.
 
-## 6. Varios frentes
+## 8. Varios frentes
 
 - Cada frente tiene archivos disjuntos, escritos en la ficha antes de empezar. Si dos fichas abiertas
   nombran el mismo archivo, se resuelve antes de repartir.
-- Lo que un frente encuentra fuera de sus archivos lo anota en la ficha, no lo edita.
-- Un solo integrador por árbol: los frentes no hacen commit.
+- **Los archivos compartidos son de la coordinadora** (configuración, modelos y migraciones,
+  dependencias, fixtures comunes, `AGENTS.md`, `estado.md`, CI). Un frente que necesita un cambio ahí lo
+  pide en su informe con el diff exacto, y sigue con lo que no depende de eso.
+- **Contratos entre frentes**: la firma de lo que uno expone y el otro llama se fija antes de repartir,
+  y se respeta aunque el otro todavía no exista. Nadie reimplementa lo que es de otro frente.
+- **No quedarse quieto esperando**: si algo depende de otro frente o de un servicio externo, se finge
+  con una implementación en memoria de la misma interfaz y se sigue.
+- **Recursos aislados**: cada frente con su base de pruebas, su puerto y sus temporales, nombrados con
+  su letra. Lo que comparte el equipo (contenedores, el server de la persona) no se frena ni se reinicia.
+- Lo que un frente encuentra fuera de sus archivos lo anota en una nota propia, no lo edita.
+- Un solo integrador por árbol: los frentes no hacen `git add`, `commit`, `checkout` ni `pull`.
+- **Informe con forma fija**: qué quedó, archivo por archivo, con la prueba que lo cubre; qué se midió;
+  qué quedó afuera y por qué; pedidos a la coordinadora; lo visto fuera de su carpeta. La última línea,
+  siempre: `ESTADO: terminado | trabado: motivo | sigo: qué falta`.
+- **Revisión cruzada de lo crítico**: los caminos del dinero, la seguridad y los datos personales los
+  revisa otro frente, no el que los escribió. Todo hallazgo alto se corrige con su prueba.
 
 ## Qué no hace
 
 - No exige modelar el dominio completo antes de empezar.
 - No impone roles fijos ni un tope de tiempo por feature.
+- No pide especificar el código: las decisiones, los contratos y los criterios sí; las firmas,
+  clases y pseudocódigo, no.
 - No cierra tareas automáticamente.

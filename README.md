@@ -44,10 +44,17 @@ Las metodologías para agentes tiran a dos extremos:
   desactualizan apenas cambia una línea. Para el trabajo de todos los días es ceremonia.
 - **Sin proceso:** rápido, hasta que hay que retomar, repartir o verificar.
 
-Lo que se precisa es **más autonomía para el agente, no más documentos**: que lea el código y decida
-solo, dentro de reglas claras, y que demuestre con evidencia lo que hizo. FDD le da el marco (la
-constitución, la arquitectura y un mapa para orientarse) y le pide lo único que el código no dice: qué
-se quiere lograr, qué se decidió y qué está probado.
+Lo que se precisa:
+
+- **Más autonomía para el agente, no más documentos**: que lea el código y decida solo el cómo, y que
+  demuestre con evidencia lo que hizo. Se le pide lo único que el código no dice: qué se quiere lograr,
+  qué se decidió y qué está probado.
+- **Mantener la constitución y las decisiones de diseño**: las reglas del proyecto y lo que ya se
+  decidió (la base, la autenticación, el stack, los invariantes) no se reabren ni se rompen. La
+  autonomía es dentro de ese marco, nunca por encima.
+- **Construir en olas**: cada feature grande se parte en fases cortas que terminan en algo que se puede
+  probar, cerradas una antes de abrir la siguiente.
+- **Dibujar primero**: si la app es visual, una maqueta aprobada antes del código.
 
 ## La idea
 
@@ -85,7 +92,11 @@ proceso y Coad aportó el modelado de objetos y la idea de *feature*.
 | 🏷️ | **Feature con nombre de resultado** | «avisar cuando una regla queda apagada», no «arreglar rules.py»: se entiende sola |
 | 🗂️ | **Una ficha por feature** | Objetivo, alcance, criterios, dominio, archivos, decisiones, evidencia y próximo paso en un lugar |
 | 🚦 | **Hitos**: diseñado → implementado → verificado → integrado | Se distingue lo propuesto de lo hecho y de lo integrado |
-| 🔑 | **Archivos con dueño** | Dos agentes no editan lo mismo; los choques se ven antes de repartir |
+| 🔒 | **Decisiones cerradas** | Una tabla de tema, decisión y por qué, que no se reabre; los invariantes con una sola puerta; el doc manda antes que el código |
+| 🎨 | **Maqueta primero** (apps visuales) | Una maqueta independiente del código, aprobada antes de construir: los agentes trabajan mejor dibujando primero |
+| 🌊 | **Olas** | La feature se construye en fases cortas, cada una con un criterio observable y sus pruebas escritas antes que el código |
+| 📍 | **Estado para retomar** (`docs/estado.md`) | Lo primero que se lee: qué ola está hecha, qué falta y qué se decidió en cada ronda |
+| 🔑 | **Archivos con dueño** | Dos agentes no editan lo mismo; los compartidos son de la coordinadora; los contratos entre frentes se respetan |
 
 ## El flujo
 
@@ -96,21 +107,25 @@ proceso y Coad aportó el modelado de objetos y la idea de *feature*.
 ```mermaid
 %%{init: {"themeVariables": {"fontSize": "22px"}}}%%
 flowchart LR
-    A(["Pedido"]) --> K["Constitución<br/>y arquitectura"]
+    A(["Pedido"]) --> K["Constitución y<br/>decisiones cerradas"]
     K --> B{"¿Puntual?"}
     B -- "sí" --> C(["Hacer y verificar"])
     B -- "no" --> D["Mapa del<br/>dominio"]
-    D --> E["Ficha"]
-    E --> F[["diseñado"]]
+    D --> E["Ficha<br/>con olas"]
+    E --> V{"¿Visual?"}
+    V -- "sí" --> M["Maqueta<br/>aprobada"]
+    M --> F[["diseñado"]]
+    V -- "no" --> F
 
     classDef hito fill:#1a7f37,stroke:#1a7f37,color:#ffffff
     classDef decision fill:#fff8c5,stroke:#9a6700,color:#1f2328
-    class F hito
     classDef regla fill:#ddf4ff,stroke:#0969da,color:#1f2328
+    classDef humano fill:#cf222e,stroke:#cf222e,color:#ffffff
+    class F hito
     class K regla
-    class B decision
+    class B,V decision
+    class M humano
 ```
-
 ### 2 · Construir y cerrar
 
 ---
@@ -118,20 +133,25 @@ flowchart LR
 ```mermaid
 %%{init: {"themeVariables": {"fontSize": "22px"}}}%%
 flowchart LR
-    G[["implementado"]] --> H[["verificado"]]
+    O["Ola n:<br/>pruebas primero"] --> G[["implementado"]]
+    G --> H[["verificado"]]
     H -. "falta evidencia" .-> G
-    H --> I{"Revisa una<br/>persona"}
-    I -. "cambios" .-> G
+    H --> Q{"¿Quedan<br/>olas?"}
+    Q -- "sí: nota de estado" --> O
+    Q -- "no" --> I{"Revisa una<br/>persona"}
+    I -. "cambios" .-> O
     I --> J[["integrado"]]
 
     classDef hito fill:#1a7f37,stroke:#1a7f37,color:#ffffff
     classDef humano fill:#cf222e,stroke:#cf222e,color:#ffffff
+    classDef decision fill:#fff8c5,stroke:#9a6700,color:#1f2328
     class G,H hito
     class I,J humano
+    class Q decision
 ```
-
 En azul, la regla que vale para todo; en verde, los hitos que se alcanzan con evidencia; en rojo,
-lo que decide una persona. Un cambio puntual no abre ficha, pero tampoco se sale de la constitución ni
+lo que aprueba una persona (la maqueta y la integración). Cada ola empieza escribiendo sus pruebas y
+cierra con una nota en `docs/estado.md`. Un cambio puntual no abre ficha, pero tampoco se sale de la constitución ni
 de la arquitectura. Si un cambio necesita salirse, se resuelve con la persona responsable antes de
 implementar; si la feature crece, se amplía la misma ficha. Al integrar, se actualizan el mapa, la
 constitución y la arquitectura si la feature los cambió.
