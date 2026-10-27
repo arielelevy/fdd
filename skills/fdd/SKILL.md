@@ -119,6 +119,10 @@ que se midió, y los commits.
 Una acción concreta para quien retome.
 ```
 
+- **La ficha no copia el código: apunta a él.** Nada de firmas, clases, pseudocódigo ni diseño
+  detallado que el agente puede leer en el repo; eso se desactualiza apenas cambia una línea. La ficha
+  guarda lo que el código no dice: el objetivo, lo que queda afuera, las decisiones con su motivo y la
+  evidencia. Con eso, el agente decide el cómo con autonomía, dentro de la constitución y la arquitectura.
 - La ficha se actualiza en hitos útiles, no después de cada herramienta.
 - Se amplía según la complejidad (arquitectura, contratos, riesgos) en la misma ficha. No se abre
   otra metodología.

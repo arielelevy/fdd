@@ -38,8 +38,16 @@ qué se pidió, qué se decidió, qué archivos toca, qué está hecho y qué s�
 Las metodologías para agentes tiran a dos extremos:
 
 - **Spec-driven development (SDD):** especificación, diseño, plan y tareas antes de tocar código.
-  Sirve para lo grande; para el trabajo de todos los días es ceremonia.
+  Nació para modelos que necesitaban que se les explicara todo. Un modelo de frontera ya no necesita
+  una especificación tan detallada: lee el código y lo entiende. Entonces el SDD se vuelve un estorbo,
+  porque termina replicando el código en Markdown, documentos que hay que mantener a la par y que se
+  desactualizan apenas cambia una línea. Para el trabajo de todos los días es ceremonia.
 - **Sin proceso:** rápido, hasta que hay que retomar, repartir o verificar.
+
+Lo que se precisa es **más autonomía para el agente, no más documentos**: que lea el código y decida
+solo, dentro de reglas claras, y que demuestre con evidencia lo que hizo. FDD le da el marco (la
+constitución, la arquitectura y un mapa para orientarse) y le pide lo único que el código no dice: qué
+se quiere lograr, qué se decidió y qué está probado.
 
 ## La idea
 
