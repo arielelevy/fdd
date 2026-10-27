@@ -63,6 +63,14 @@ del dominio compartido y el trabajo partido en features chicas con valor para el
 dueño y avance visible. Esta skill toma esas piezas, deja afuera lo que no le sirve a un agente y les
 suma la ficha y la exigencia de evidencia de FTD.
 
+> [!TIP]
+> **Donde más rinde es en una fábrica de software:** varios agentes de código (Claude Code, Codex,
+> Kiro, Pi, coda…) trabajando al mismo tiempo sobre un proceso **repetible y paralelizable**. Ya no se
+> trabaja con un solo agente al que se le escribe un pedido, se espera y se revisa, uno por vez: eso es
+> lento. Con FDD cada agente toma una feature o un frente de una ola, con sus archivos, su contrato y
+> sus pruebas; una coordinadora reparte, integra y lleva el estado, y el avance se mide por evidencia,
+> no por conversaciones.
+
 <details>
 <summary><b>📜 FDD original, en un minuto</b> (la teoría completa está en <a href="docs/fdd-1997.md">docs/fdd-1997.md</a>)</summary>
 
