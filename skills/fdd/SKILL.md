@@ -90,6 +90,8 @@ Actualizado: <fecha> (<commit>)
 ```
 
 - Es un índice, no documentación: una línea por entidad y la ruta donde vive.
+- Cubre el sistema entero, no sólo lo que se ve: entidades de datos, motores, servicios y datasets, además
+  de las pantallas. Un mapa que sólo indexa la interfaz deja afuera justo lo que las features de backend tocan.
 - Se corrige cuando una feature cambia una entidad o un flujo, en el mismo cambio.
 - Si no existe, la primera ficha del proyecto lo crea con lo que ya se leyó para la feature, no con
   un relevamiento aparte.
@@ -129,6 +131,14 @@ Si cambia alguno, qué cambia.
 ## Archivos y dueños
 - `<ruta>`: <sesión o frente dueño>. Nadie más lo edita mientras la ficha esté abierta.
 
+## Efectos compartidos
+Lo que el cambio mueve fuera de sus archivos: versiones de contratos o formatos, hashes sellados, pruebas
+medidas que se invalidan (rendimiento, equivalencia, localidad), pines en pruebas de otros, datos o
+esquemas compartidos. Cada uno con quién lo actualiza y cuándo, para planificar los re-sellos y las
+re-mediciones antes de repartir y no descubrirlos en la suite completa del cierre. Quien sube una
+versión con contrato documentado corre su prueba de deriva de contratos en el mismo paso, sin esperar
+al cierre. Ese control no reemplaza la suite completa exigida para cerrar la ola.
+
 ## Maqueta
 Si la feature es visual: enlace a la maqueta aprobada (ver sección 5).
 
@@ -141,7 +151,8 @@ Tareas, dependencias y decisiones tomadas con su motivo.
 
 ## Evidencia
 Lo observado: pruebas que pasaron, que fallaron y que no se corrieron, con la condición en
-que se midió, y los commits.
+que se midió, y los commits. La ruta de cada evidencia que respalda un hito (logs, mediciones,
+arneses) queda escrita acá: lo citado no se borra al limpiar temporales.
 
 ## Próximo paso
 Una acción concreta para quien retome.
@@ -198,18 +209,29 @@ plan, la suite al cierre y las decisiones de cada ronda con su fecha. Lo mantien
 
 | Hito | Se marca cuando |
 |---|---|
-| diseñado | objetivo, alcance, criterios, dominio, constitución, arquitectura, dueños, olas y (si es visual) maqueta aprobada |
+| diseñado | objetivo, alcance, criterios, dominio, constitución, arquitectura, dueños, efectos compartidos, olas y (si es visual) maqueta aprobada |
 | implementado | el cambio está hecho en el árbol o en una rama |
 | verificado | cada criterio tiene evidencia observada, no afirmada |
 | integrado | **lo marca una persona**, nunca el agente |
 
 - Un turno terminado, un test aislado o un merge no mueven un hito solos.
 - Lo que se afirma sin evidencia cuenta como no hecho.
+- **Verificado es por el camino real.** La ficha ordena el trabajo, pero no encuentra defectos: los más
+  caros aparecen corriendo el cambio como corre de verdad (el proceso arrancado como en producción, el
+  binario real, la medición repetida), no con dobles ni con el arnés de pruebas solo. Un test que recorre
+  una carpeta vacía pasa sin verificar nada; un runner que agrega rutas que producción no tiene oculta
+  justo esos errores. Al menos un criterio de cada feature se comprueba por el camino real.
 
 ## 8. Varios frentes
 
+- **El encargo de un frente es su ficha.** No se escribe un encargo y además una ficha que dice lo mismo:
+  el encargo lleva el `Hito:`, los archivos con dueño, el dominio y los efectos compartidos, y el frente lo
+  actualiza al pasar de hito.
 - Cada frente tiene archivos disjuntos, escritos en la ficha antes de empezar. Si dos fichas abiertas
   nombran el mismo archivo, se resuelve antes de repartir.
+- **Los efectos compartidos se reparten antes**: quién sube cada versión, quién re-sella cada hash y
+  cuándo se re-mide cada prueba medida. Las mediciones finales se coordinan al cierre con las fuentes
+  congeladas; los controles de contratos corren con cada cambio de versión.
 - **Los archivos compartidos son de la coordinadora** (configuración, modelos y migraciones,
   dependencias, fixtures comunes, `AGENTS.md`, `estado.md`, CI). Un frente que necesita un cambio ahí lo
   pide en su informe con el diff exacto, y sigue con lo que no depende de eso.
@@ -220,6 +242,8 @@ plan, la suite al cierre y las decisiones de cada ronda con su fecha. Lo mantien
 - **Recursos aislados**: cada frente con su base de pruebas, su puerto y sus temporales, nombrados con
   su letra. Lo que comparte el equipo (contenedores, el server de la persona) no se frena ni se reinicia.
 - Lo que un frente encuentra fuera de sus archivos lo anota en una nota propia, no lo edita.
+- **Antes de limpiar temporales de coordinación**, buscar qué rutas citan las fichas, los contratos y los
+  informes, y no borrar esas sin confirmación: la evidencia citada respalda hitos y pruebas medidas.
 - Un solo integrador por árbol: los frentes no hacen `git add`, `commit`, `checkout` ni `pull`.
 - **Informe con forma fija**: qué quedó, archivo por archivo, con la prueba que lo cubre; qué se midió;
   qué quedó afuera y por qué; pedidos a la coordinadora; lo visto fuera de su carpeta. La última línea,
