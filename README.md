@@ -101,9 +101,9 @@ proceso y Coad aportó el modelado de objetos y la idea de *feature*.
 | 🗂️ | **Una ficha por feature** | Objetivo, alcance, criterios, dominio, archivos, decisiones, evidencia y próximo paso en un lugar |
 | 🚦 | **Hitos**: diseñado → implementado → verificado → integrado | Se distingue lo propuesto de lo hecho y de lo integrado |
 | 🔒 | **Decisiones cerradas** | Una tabla de tema, decisión y por qué, que no se reabre; los invariantes con una sola puerta; el doc manda antes que el código |
-| 🎨 | **Maqueta primero** (apps visuales) | Una maqueta independiente del código, aprobada antes de construir: los agentes trabajan mejor dibujando primero |
-| 🌊 | **Olas** | La feature se construye en fases cortas, cada una con un criterio observable y sus pruebas escritas antes que el código |
-| 📍 | **Estado para retomar** (`docs/estado.md`) | Lo primero que se lee: qué ola está hecha, qué falta y qué se decidió en cada ronda |
+| 🎨 | **Maqueta primero** (apps visuales) | Maqueta en Penpot con el diseño central de la app y un recorrido conectado; la inicial la aprueba la persona y las de olas posteriores, la coordinadora dentro de lo autorizado |
+| 🌊 | **Olas** | Incrementos verticales usables, cada uno con un criterio observable y sus casos críticos escritos antes que el código; la verificación global, una vez al cierre |
+| 📍 | **Estado para retomar** | Lo primero que se lee: el registro de objetivos y olas de la herramienta del proyecto o, si no hay, `docs/estado.md` |
 | 🔑 | **Archivos con dueño** | Dos agentes no editan lo mismo; los compartidos son de la coordinadora; los contratos entre frentes se respetan |
 
 ## El flujo

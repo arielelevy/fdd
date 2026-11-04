@@ -120,8 +120,8 @@ Qué cambia para el usuario y por qué.
 ## Alcance
 Qué incluye y qué queda afuera.
 
-## Criterios de aceptación
-Comportamientos observables y cómo comprobarlos.
+## Criterios y demostración
+Condiciones → acción → resultado observable; cómo se comprueba y qué evidencia queda.
 
 ## Dominio, constitución y arquitectura
 Entidades y flujos de `docs/dominio.md` que toca, reglas de la constitución que la afectan y partes de
@@ -137,12 +137,14 @@ medidas que se invalidan (rendimiento, equivalencia, localidad), pines en prueba
 esquemas compartidos. Cada uno con quién lo actualiza y cuándo, para planificar los re-sellos y las
 re-mediciones antes de repartir y no descubrirlos en la suite completa del cierre. Quien sube una
 versión con contrato documentado corre su prueba de deriva de contratos en el mismo paso, sin esperar
-al cierre. Ese control no reemplaza la suite completa exigida para cerrar la ola.
+al cierre. Ese control no reemplaza la verificación global que el proyecto exija al cierre.
 
 ## Maqueta
-Si la feature es visual: enlace a la maqueta aprobada (ver sección 5).
+Si la feature es visual: enlace a la maqueta en Penpot y quién la aprobó (ver sección 5).
 
 ## Olas
+Si el plan vive en una herramienta que registra objetivos y olas, enlazar la ola; no copiar la tabla.
+Si no, la tabla:
 | Ola | Termina con (criterio observable) | Pruebas que la cierran | Depende de | Estado |
 |---|---|---|---|---|
 
@@ -164,21 +166,33 @@ Una acción concreta para quien retome.
   evidencia. Con eso, el agente decide el cómo con autonomía, dentro de la constitución y la arquitectura.
 - La ficha se actualiza en hitos útiles, no después de cada herramienta.
 - Se amplía según la complejidad (arquitectura, contratos, riesgos) en la misma ficha. No se abre
-  otra metodología.
+  otra metodología. «Archivos y dueños», «Efectos compartidos», «Maqueta» y «Olas» se agregan sólo
+  cuando el trabajo los necesita.
 - No se crea otro backlog: la ficha enlaza el pendiente de la lista que el proyecto ya tenga.
 
-## 5. Maqueta primero (apps visuales)
+## 5. Maqueta primero en Penpot (apps visuales)
 
-Si la aplicación tiene pantallas, **antes del código va una maqueta**, independiente del código de la
-app: HTML estático con su CSS en `maqueta/`, una imagen o un diseño. Los agentes trabajan mejor cuando
-dibujan primero: la maqueta fija qué se ve, en qué orden y con qué textos, y la persona responsable la
-aprueba sin leer código.
+Pedido de Ariel, 2026-11-04: las maquetas y prototipos se hacen en **Penpot**.
+Antes del código de una app visual, reusar su proyecto de Penpot y su base de diseño
+central: colores, tipografía, tarjetas, componentes y estados. La identidad existente
+se conserva. En una app nueva se define una base mínima que crece con las olas.
 
-- Es una **referencia de diseño, no el frontend**: no se importa ni se reusa como código.
-- Usa la identidad visual que ya existe (colores, tipografías, componentes del sitio o del sistema de
-  diseño), no una inventada.
-- Se prueba como se va a usar: en el ancho de un celular si la usan desde el celular.
-- La ficha la enlaza, y los criterios de aceptación visuales se comprueban contra ella.
+- Conectar el recorrido entre pantallas para probar el objetivo de uso, no sólo imágenes aisladas.
+- Reutilizar tokens y componentes compartidos; el diseño evoluciona con incrementos usables.
+  Si los tokens se copian a mano desde el código, registrar su origen y comprobar diferencias
+  antes de usar la maqueta.
+- Verificar en vivo el archivo y el recorrido del visor antes de afirmar que están guardados.
+- La ficha enlaza proyecto, archivo y flujo de Penpot con sus criterios de diseño y de uso.
+- **Quién aprueba** (decisión de Ariel, 2026-11-01): la maqueta inicial de la app la aprueba la
+  persona responsable antes de construir. En las olas posteriores, la coordinadora decide si hace
+  falta una maqueta, la revisa y la aprueba dentro del alcance y el diseño ya autorizados, y
+  registra la decisión en la ficha. Eso no autoriza cambiar alcance, identidad visual,
+  arquitectura, contratos ni decisiones cerradas; ante un recorrido principal nuevo, consultar.
+- Comprobar el ancho de celular cuando corresponda al uso previsto.
+- HTML y capturas pueden acompañar la evidencia; no reemplazan la referencia editable
+  de Penpot salvo pedido explícito. Si falta la conexión, informar el impedimento y
+  preparar su acceso, sin sustituir la herramienta elegida por cuenta propia.
+- El prototipo no acepta entregas ni sustituye la verificación de la app real.
 
 ## 6. El plan en olas
 
@@ -189,27 +203,41 @@ de abrir la siguiente.
 - **Cada ola tiene un criterio de aceptación observable**, del lado del usuario: «desde el celular,
   buscar un DNI de prueba, elegir cuotas y ver los datos para transferir», no «terminar el servicio de
   cuotas».
-- **La prueba va antes que el código.** Los casos críticos de la ola se numeran y se escriben primero;
-  la ola no se cierra sin ellos en verde, con la suite completa, no sólo los suyos.
+- **Cada ola entrega algo usable y vertical**: atraviesa sólo las capas necesarias para su resultado.
+  Base, arquitectura y diseño crecen con las olas. Sólo la próxima ola se detalla del todo; las
+  siguientes conservan resultado y dependencias.
+- **La prueba va antes que el código.** Los casos críticos de la ola se numeran con su demostración y
+  se escriben primero. La ola cierra con ellos y las pruebas afectadas por su delta en verde, y al
+  menos un criterio comprobado por el camino real.
+- **La verificación global, una vez.** La suite completa, y la mutación amplia o el clon limpio si el
+  proyecto los exige, se corren al cierre del release o de la integración, con las fuentes
+  congeladas. Se repiten sólo ante un fallo, un cambio que invalide la evidencia o una exigencia
+  explícita. La mutación del delta, cuando el riesgo de la lógica la justifica; no por rutina.
 - **Las dependencias entre olas van en una tabla** (ola, esfuerzo, depende de). Lo que bloquea
   producción pero no el desarrollo (credenciales, definiciones del cliente) es una ola 0 que corre en
   paralelo; mientras tanto se trabaja con valores de ejemplo.
 - **Cada ola cierra con revisión de código y una nota de estado** (qué quedó, qué falta, qué se
   decidió). Nada se marca hecho hasta que la persona responsable lo indique.
-- Dentro de una ola, los frentes que no comparten archivos corren **en paralelo** (sección 8).
+- Dentro de una ola, los frentes que no comparten archivos pueden correr **en paralelo** (sección 8)
+  cuando compensa; un frente por funcionalidad de punta a punta.
 - Lo que bloquea una ola de producción (dinero real, DNS, credenciales) va al final y espera confirmación.
 
 ### Estado para retomar
 
-En un proyecto con varias olas o features, `docs/estado.md` es **lo primero que se lee al retomar**:
-una tabla con cada ola y su estado (hecho en local, desplegado, falta…), lo que se agregó fuera del
-plan, la suite al cierre y las decisiones de cada ronda con su fecha. Lo mantiene sólo la coordinadora.
+En un proyecto con varias olas o features, el estado es **lo primero que se lee al retomar**: cada ola y
+su estado (hecho en local, desplegado, falta…), lo que se agregó fuera del plan, la verificación al
+cierre y las decisiones de cada ronda con su fecha. Una sola fuente, que mantiene la coordinadora:
+
+- Si el proyecto usa una herramienta que registra objetivos, olas y su avance, ese registro es el
+  estado; la ficha enlaza el objetivo y el plan fuente.
+- Si no, `docs/estado.md`, o un enlace explícito en la ficha al documento que cumple ese papel.
+- No se mantienen dos estados del mismo plan.
 
 ## 7. Hitos
 
 | Hito | Se marca cuando |
 |---|---|
-| diseñado | objetivo, alcance, criterios, dominio, constitución, arquitectura, dueños, efectos compartidos, olas y (si es visual) maqueta aprobada |
+| diseñado | objetivo, alcance, criterios con su demostración, dominio, constitución y arquitectura; dueños, efectos compartidos y olas cuando correspondan; si es visual, maqueta aprobada según la sección 5 |
 | implementado | el cambio está hecho en el árbol o en una rama |
 | verificado | cada criterio tiene evidencia observada, no afirmada |
 | integrado | **lo marca una persona**, nunca el agente |
@@ -233,7 +261,7 @@ plan, la suite al cierre y las decisiones de cada ronda con su fecha. Lo mantien
   cuándo se re-mide cada prueba medida. Las mediciones finales se coordinan al cierre con las fuentes
   congeladas; los controles de contratos corren con cada cambio de versión.
 - **Los archivos compartidos son de la coordinadora** (configuración, modelos y migraciones,
-  dependencias, fixtures comunes, `AGENTS.md`, `estado.md`, CI). Un frente que necesita un cambio ahí lo
+  dependencias, fixtures comunes, `AGENTS.md`, el estado del plan, CI). Un frente que necesita un cambio ahí lo
   pide en su informe con el diff exacto, y sigue con lo que no depende de eso.
 - **Contratos entre frentes**: la firma de lo que uno expone y el otro llama se fija antes de repartir,
   y se respeta aunque el otro todavía no exista. Nadie reimplementa lo que es de otro frente.
