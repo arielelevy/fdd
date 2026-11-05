@@ -52,9 +52,10 @@ Lo que se precisa:
 - **Mantener la constitución y las decisiones de diseño**: las reglas del proyecto y lo que ya se
   decidió (la base, la autenticación, el stack, los invariantes) no se reabren ni se rompen. La
   autonomía es dentro de ese marco, nunca por encima.
-- **Construir en olas**: cada feature grande se parte en fases cortas que terminan en algo que se puede
-  probar, cerradas una antes de abrir la siguiente.
-- **Dibujar primero**: si la app es visual, una maqueta aprobada antes del código.
+- **Construir en olas**: un objetivo grande se parte en features y se construye en olas cortas,
+  verticales, que terminan en algo que se puede usar y probar; aceptar una ola habilita la que depende
+  de ella.
+- **Dibujar primero**: si la app es visual, una maqueta en Penpot antes del código.
 
 ## La idea
 
@@ -68,8 +69,8 @@ suma la ficha y la exigencia de evidencia de FTD.
 > Kiro, Pi, coda…) trabajando al mismo tiempo sobre un proceso **repetible y paralelizable**. Ya no se
 > trabaja con un solo agente al que se le escribe un pedido, se espera y se revisa, uno por vez: eso es
 > lento. Con FDD cada agente toma una feature o un frente de una ola, con sus archivos, su contrato y
-> sus pruebas; una coordinadora reparte, integra y lleva el estado, y el avance se mide por evidencia,
-> no por conversaciones.
+> sus pruebas; una sola coordinadora reparte, integra y lleva el estado, las preguntas a la persona
+> pasan por un solo lugar, y el avance se mide por evidencia, no por conversaciones.
 
 <details>
 <summary><b>📜 FDD original, en un minuto</b> (la teoría completa está en <a href="docs/fdd-1997.md">docs/fdd-1997.md</a>)</summary>
@@ -98,13 +99,14 @@ proceso y Coad aportó el modelado de objetos y la idea de *feature*.
 | ⚖️ | **Constitución y arquitectura** | Las reglas y la estructura que ningún cambio rompe, ni el más chico (`AGENTS.md`, decisiones, contratos, capas y patrones). FDD trabaja dentro de ellas y no pide otro archivo |
 | 🗺️ | **Mapa del dominio** (`docs/dominio.md`) | La sesión nueva sabe qué entidades hay y dónde vive cada una sin explorar el repo |
 | 🏷️ | **Feature con nombre de resultado** | «avisar cuando una regla queda apagada», no «arreglar rules.py»: se entiende sola |
-| 🗂️ | **Una ficha por feature** | Objetivo, alcance, criterios, dominio, archivos, decisiones, evidencia y próximo paso en un lugar |
+| 🗂️ | **Una ficha por feature** | Objetivo, alcance, criterios con su demostración, dominio, archivos, decisiones, evidencia y próximo paso en un lugar |
 | 🚦 | **Hitos**: diseñado → implementado → verificado → integrado | Se distingue lo propuesto de lo hecho y de lo integrado |
 | 🔒 | **Decisiones cerradas** | Una tabla de tema, decisión y por qué, que no se reabre; los invariantes con una sola puerta; el doc manda antes que el código |
 | 🎨 | **Maqueta primero** (apps visuales) | Maqueta en Penpot con el diseño central de la app y un recorrido conectado; la inicial la aprueba la persona y las de olas posteriores, la coordinadora dentro de lo autorizado |
-| 🌊 | **Olas** | Incrementos verticales usables, cada uno con un criterio observable y sus casos críticos escritos antes que el código; la verificación global, una vez al cierre |
-| 📍 | **Estado para retomar** | Lo primero que se lee: el registro de objetivos y olas de la herramienta del proyecto o, si no hay, `docs/estado.md` |
+| 🌊 | **Olas** | Proyecto → Objetivo → Feature → Ola → Tarea: las features viven en el Markdown del objetivo y se construyen en incrementos verticales usables, cada uno con un criterio observable y sus casos críticos escritos antes que el código; aceptar una ola habilita la que depende de ella; la verificación global, una vez al cierre |
+| 📍 | **Estado para retomar** | Lo primero que se lee: el registro de objetivos y olas de la herramienta del proyecto o, si no hay, `docs/estado.md`. Una sola fuente, que lleva la coordinadora aunque la ola se haya lanzado a mano |
 | 🔑 | **Archivos con dueño** | Dos agentes no editan lo mismo; los compartidos son de la coordinadora; los contratos entre frentes se respetan |
+| 🧭 | **Una sola coordinadora** | Reparte, integra y lleva el estado; las preguntas a la persona pasan por un solo lugar, con contexto, y cada respuesta vuelve a quien preguntó |
 
 ## El flujo
 
@@ -121,7 +123,7 @@ flowchart LR
     B -- "no" --> D["Mapa del<br/>dominio"]
     D --> E["Ficha<br/>con olas"]
     E --> V{"¿Visual?"}
-    V -- "sí" --> M["Maqueta<br/>aprobada"]
+    V -- "sí" --> M["Maqueta en<br/>Penpot aprobada"]
     M --> F[["diseñado"]]
     V -- "no" --> F
 
@@ -145,8 +147,9 @@ flowchart LR
     G --> H[["verificado"]]
     H -. "falta evidencia" .-> G
     H --> Q{"¿Quedan<br/>olas?"}
-    Q -- "sí: nota de estado" --> O
-    Q -- "no" --> I{"Revisa una<br/>persona"}
+    Q -- "sí: ola aceptada,<br/>estado al día" --> O
+    Q -- "no" --> X["Verificación<br/>global, una vez"]
+    X --> I{"Revisa una<br/>persona"}
     I -. "cambios" .-> O
     I --> J[["integrado"]]
 
@@ -158,8 +161,11 @@ flowchart LR
     class Q decision
 ```
 En azul, la regla que vale para todo; en verde, los hitos que se alcanzan con evidencia; en rojo,
-lo que aprueba una persona (la maqueta y la integración). Cada ola empieza escribiendo sus pruebas y
-cierra con una nota en `docs/estado.md`. Un cambio puntual no abre ficha, pero tampoco se sale de la constitución ni
+lo que aprueba una persona (la maqueta inicial y la integración; las maquetas de olas posteriores las
+aprueba la coordinadora dentro del alcance y el diseño ya autorizados). Cada ola empieza escribiendo
+sus pruebas, cierra con ellas y las afectadas por su delta en verde, y deja una nota en el estado del
+plan (el registro de la herramienta o `docs/estado.md`); verificar una ola no es aceptarla. La suite
+completa corre una vez, al cierre, con las fuentes congeladas. Un cambio puntual no abre ficha, pero tampoco se sale de la constitución ni
 de la arquitectura. Si un cambio necesita salirse, se resuelve con la persona responsable antes de
 implementar; si la feature crece, se amplía la misma ficha. Al integrar, se actualizan el mapa, la
 constitución y la arquitectura si la feature los cambió.
@@ -178,6 +184,24 @@ Tres reglas atraviesan todo:
 > la de la app, **autentica** con otro método, trae una **librería** para algo que ya está resuelto o
 > **no reusa** lo que la app ya tiene y escribe uno paralelo. Reusar antes de agregar; y si lo existente
 > no alcanza, el agente lo propone y espera la decisión, no lo hace y avisa después.
+
+### Con varios agentes a la vez
+
+- **Una sola coordinadora por proyecto.** Otra sesión que empieza a repartir trabajo se detiene y le
+  traspasa sus frentes, fichas y cambios sin commitear.
+- **Las preguntas a la persona pasan por un solo lugar**, agrupadas por proyecto y objetivo; la
+  coordinadora no hace de cartero ni responde por la persona.
+- **Integrar con otro frente a medias** en el mismo árbol: se commitean sólo los archivos del frente
+  entregado y se compila desde una copia limpia; la regresión ajena se le avisa a su dueño y no frena
+  la entrega.
+- **Pedidos nuevos durante una ola**: si tocan un frente en curso, se suman a su ficha con fecha y cita
+  textual; si no, van a un frente libre.
+- **«Achicar» no es rediseñar**: un ajuste visual parte de la versión anterior del componente y sólo
+  cambia tamaños.
+- **La metodología queda a la vista** de quien usa la app: una ayuda resume el flujo y enlaza la skill,
+  sin reglas propias.
+
+El detalle está en las secciones 6 y 8 de [`skills/fdd/SKILL.md`](skills/fdd/SKILL.md).
 
 ## Lo medido
 
@@ -208,8 +232,9 @@ Que ninguna coordinadora deje de recibir informes sin saberlo.
 Incluye: decir en la respuesta que la regla quedó apagada; listar las apagadas.
 Queda afuera: dejar de retener informes sin integrar (es a propósito).
 
-## Criterios de aceptación
-1. DELETE /rules/<id> con informes pendientes responde desactivada y la lista. Prueba HTTP.
+## Criterios y demostración
+1. Regla con informes pendientes → DELETE /rules/<id> → responde desactivada y la lista.
+   Se comprueba con una prueba HTTP.
 
 ## Dominio, constitución y arquitectura
 Regla, Informe, flujo «Borrar una regla». Regla que no se rompe: un informe no pasa a
@@ -258,8 +283,10 @@ desde su archivo de reglas (`AGENTS.md`, `.cursorrules`, etc.).
    sola por su descripción, o se la nombrás («usá fdd»).
 2. La primera ficha del proyecto crea `docs/dominio.md` con lo que el agente ya leyó para esa feature;
    no hace falta un relevamiento previo.
-3. Para retomar, la sesión nueva lee el mapa y la ficha, y sigue desde **Próximo paso**.
-4. Cuando revisaste la evidencia, marcás vos el hito **integrado**.
+3. Si es un objetivo grande, el plan lo parte en features y olas en su Markdown; sólo la próxima ola
+   se detalla del todo.
+4. Para retomar, la sesión nueva lee el estado, el mapa y la ficha, y sigue desde **Próximo paso**.
+5. Cuando revisaste la evidencia, marcás vos el hito **integrado**.
 
 ## Qué no es
 
@@ -274,7 +301,7 @@ desde su archivo de reglas (`AGENTS.md`, `.cursorrules`, etc.).
 | Para | equipos humanos grandes | agentes, trabajo grande | agentes, trabajo de todos los días |
 | Antes de codificar | modelo de dominio completo | spec, diseño, plan, tareas | ficha breve; mapa incremental |
 | Reglas del proyecto | implícitas | constitución propia | la que ya existe (`AGENTS.md`…) |
-| Unidad | feature de ≤ 2 semanas | spec | ficha por feature |
+| Unidad | feature de ≤ 2 semanas | spec | ficha por feature; objetivo → features → olas |
 | Avance | 6 hitos por feature | fases | 4 hitos, el último humano |
 | Cierre | jefe de programadores | aprobación de fases | sólo con evidencia y una persona |
 
