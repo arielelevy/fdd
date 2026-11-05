@@ -196,8 +196,12 @@ se conserva. En una app nueva se define una base mínima que crece con las olas.
 
 ## 6. El plan en olas
 
-Una feature grande se construye en **olas** (fases cortas), en orden, y cada una termina con algo que
-se puede probar. Así se construyó de punta a punta un sistema de cobros en producción: cada ola cerrada y probada antes
+Jerarquía (decisión de Ariel, 2026-11-05): **Proyecto → Objetivo → Feature → Ola → Tarea**. Un
+**objetivo** es grande: se descompone en **features** (resultados de valor) que se implementan en
+**olas**, en orden, y cada ola termina con algo que se puede probar. Las features viven en el
+Markdown del objetivo, que las agrupa con sus olas; no son un nivel aparte en la herramienta. Una
+ola es un sprint: uno o varios agentes avanzan en paralelo una o más features que no comparten
+archivos. Así se construyó de punta a punta un sistema de cobros en producción: cada ola cerrada y probada antes
 de abrir la siguiente.
 
 - **Cada ola tiene un criterio de aceptación observable**, del lado del usuario: «desde el celular,
@@ -287,6 +291,13 @@ cierre y las decisiones de cada ronda con su fecha. Una sola fuente, que mantien
 - **Pedidos nuevos de la persona durante una ola**: si tocan archivos de un frente en curso, se suman a
   su ficha como ampliación fechada con la cita textual; si son independientes, van a un frente libre con
   ficha propia. Si la persona insiste, se prioriza y se entrega aparte en cuanto esté.
+- **Una sola coordinadora por proyecto**, la que la herramienta marca como tal. Otra sesión que empieza
+  a repartir trabajo o lanzar frentes se detiene y le traspasa sus frentes, fichas y cambios sin commitear.
+- **Las preguntas a la persona pasan por un solo lugar** (el human-in-the-loop formal): agrupadas por
+  proyecto y objetivo, con contexto suficiente para responder sin abrir otra pantalla, y cada respuesta
+  vuelve a quien preguntó. La coordinadora no hace de cartero ni responde por la persona.
+- **«Achicar» no es rediseñar**: un pedido de ajuste visual conserva dibujo y comportamiento; se parte de
+  la versión anterior del componente (el commit previo) y sólo se cambian tamaños.
 - **Informe con forma fija**: qué quedó, archivo por archivo, con la prueba que lo cubre; qué se midió;
   qué quedó afuera y por qué; pedidos a la coordinadora; lo visto fuera de su carpeta. La última línea,
   siempre: `ESTADO: terminado | trabado: motivo | sigo: qué falta`.
