@@ -2,7 +2,7 @@
 name: fdd
 description: Feature-Driven Development para agentes de IA. Una ficha por feature con nombre de resultado, dentro de la constitución y la arquitectura del proyecto (que ningún cambio rompe, ni el más chico), con mapa del dominio vivo, avance por hitos y archivos con dueño. Usar para construir o repartir una feature entre sesiones, retomar una feature de otra sesión o planear trabajo de varios frentes. Un cambio puntual y claro no necesita ficha, pero tampoco se sale de la constitución ni de la arquitectura.
 metadata:
-  version: "2.1"
+  version: "2.2"
 ---
 
 # FDD · Feature-Driven Development para agentes
@@ -273,6 +273,13 @@ de abrir la siguiente.
   paralelo; mientras tanto se trabaja con valores de ejemplo.
 - **Una lista ordenada no es el grafo.** Las dependencias se declaran y se revisan antes de ejecutar, y
   no obligan a correr todo en serie: lo que no depende de nada pendiente puede avanzar (Astra P1).
+- **Antes de lanzar un objetivo, se reconcilia su plan con lo ya hecho.** Un plan escrito días antes
+  repite trabajo: cada entrada se verifica en el código (no sólo en el texto) y lo resuelto sale con su
+  commit. Al reconciliar un plan de 61 entradas, 31 ya estaban resueltas (práctica del 2026-11-05).
+- **El objetivo de la coordinadora sigue la ola en curso, no el objetivo entero.** Si la herramienta le
+  fija una condición de cierre a la sesión, es la ola en curso con sus features y su criterio, con el
+  objetivo como contexto; al aceptarse la ola, pasa a la siguiente. Corta y en una línea: un comando
+  largo que la herramienta convierte en adjunto no se ejecuta (decisión del 2026-11-05).
 - **Por proyecto, un objetivo en ejecución a la vez.** Los demás esperan en una cola visible, salvo
   decisión explícita de la persona responsable (decisión del 2026-11-05).
 - **Cada ola cierra con revisión de código y una nota de estado** (qué quedó, qué falta, qué se
@@ -361,6 +368,12 @@ cierre y las decisiones de cada ronda con su fecha. Una sola fuente, que mantien
   con una implementación en memoria de la misma interfaz y se sigue.
 - **Recursos aislados**: cada frente con su base de pruebas, su puerto y sus temporales, nombrados con
   su letra. Lo que comparte el equipo (contenedores, el server de la persona) no se frena ni se reinicia.
+- **Las pruebas nunca tocan el estado real de la máquina.** Corren con carpetas temporales, y ningún hilo
+  o proceso que lance una prueba sigue vivo cuando termina. Un hilo de prueba que sobrevivió reescribió dos
+  veces la identidad de la máquina y cortó el enlace con la otra PC (incidente del 2026-11-05).
+- **Una falla no se atribuye sin línea de base.** Antes de culpar al delta de un frente, la prueba se corre
+  en una copia limpia del commit anterior. Una falla que ya estaba se anota aparte con su dueño y no
+  frena la entrega.
 - Lo que un frente encuentra fuera de sus archivos lo anota en una nota propia, no lo edita.
 - **Antes de limpiar temporales de coordinación**, buscar qué rutas citan las fichas, los contratos y los
   informes, y no borrar esas sin confirmación: la evidencia citada respalda hitos y pruebas medidas.

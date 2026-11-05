@@ -11,7 +11,7 @@
 
 <p align="center">
   <a href="LICENSE"><img alt="Licencia MIT" src="https://img.shields.io/badge/licencia-MIT-blue"></a>
-  <img alt="Versión 2.1" src="https://img.shields.io/badge/versi%C3%B3n-2.1-orange">
+  <img alt="Versión 2.2" src="https://img.shields.io/badge/versi%C3%B3n-2.2-orange">
   <img alt="Claude Code" src="https://img.shields.io/badge/Claude%20Code-skill-8A63D2">
   <img alt="Codex" src="https://img.shields.io/badge/Codex-skill-10A37F">
   <a href="#lo-medido"><img alt="43 % menos tokens para retomar" src="https://img.shields.io/badge/retomar-%E2%88%9243%25%20tokens-brightgreen"></a>
@@ -333,6 +333,7 @@ dan por verificadas.
 
 ## Cambios
 
+- **2.2** (2026-11-05) · Lecciones de uso: reconciliar el plan con lo ya hecho antes de lanzar un objetivo, el objetivo de la coordinadora sigue la ola en curso, las pruebas nunca tocan el estado real de la máquina y una falla no se atribuye sin línea de base.
 - **2.1** (2026-11-05) · Revisión independiente: hechos separados (aprobado, entregado, verificado, aceptado), dependencias como grafo, efecto externo incierto, evidencia en investigaciones, comparar contra una base, revisiones por riesgo, maqueta con estados y teclado, un objetivo en ejecución por proyecto, frentes siempre vinculados, auditar herramientas de terceros; Penpot como ejemplo y sin enlaces privados.
 - **2.0** (2026-11-05) · FDD 2.0: olas verticales usables, con las pruebas antes que el código y la
   verificación global una vez al cierre; maqueta primero (hoy, en Penpot); coordinación de varios agentes (una
