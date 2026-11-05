@@ -2,7 +2,7 @@
 name: fdd
 description: Feature-Driven Development para agentes de IA. Una ficha por feature con nombre de resultado, dentro de la constitución y la arquitectura del proyecto (que ningún cambio rompe, ni el más chico), con mapa del dominio vivo, avance por hitos y archivos con dueño. Usar para construir o repartir una feature entre sesiones, retomar una feature de otra sesión o planear trabajo de varios frentes. Un cambio puntual y claro no necesita ficha, pero tampoco se sale de la constitución ni de la arquitectura.
 metadata:
-  version: "2.3"
+  version: "2.4"
 ---
 
 # FDD · Feature-Driven Development para agentes
@@ -133,6 +133,16 @@ Nombre de resultado: **acción + resultado + objeto**, del lado del usuario.
 - Mal: «arreglar rules.py», «refactor de reglas».
 
 Si no entra en una frase así, son varias features: una ficha cada una.
+
+**Una feature es un corte vertical**: atraviesa las capas que hacen falta (interfaz, API, dominio, datos)
+para entregar ese resultado de punta a punta, no una capa entera. «La API de reglas» o «el modelo de datos»
+no son features; «avisar cuando una regla queda apagada» sí.
+
+**La arquitectura y los patrones de diseño crecen de a poco**, feature a feature y ola a ola: se decide la
+base mínima que exige la constitución (seguridad, durabilidad, permisos) y el resto aparece cuando una
+feature lo necesita, con su motivo en la ficha. Diseñar toda la arquitectura, el plan y las tareas antes de
+la primera línea es cascada: SDD (especificación → diseño → plan → tareas) es cascada, aunque la escriba un
+agente, y por eso FDD no lo usa (Ariel, 2026-11-05).
 
 ## 4. La ficha
 

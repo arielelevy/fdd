@@ -11,7 +11,7 @@
 
 <p align="center">
   <a href="LICENSE"><img alt="Licencia MIT" src="https://img.shields.io/badge/licencia-MIT-blue"></a>
-  <img alt="Versión 2.3" src="https://img.shields.io/badge/versi%C3%B3n-2.3-orange">
+  <img alt="Versión 2.4" src="https://img.shields.io/badge/versi%C3%B3n-2.4-orange">
   <img alt="Claude Code" src="https://img.shields.io/badge/Claude%20Code-skill-8A63D2">
   <img alt="Codex" src="https://img.shields.io/badge/Codex-skill-10A37F">
   <a href="#lo-medido"><img alt="43 % menos tokens para retomar" src="https://img.shields.io/badge/retomar-%E2%88%9243%25%20tokens-brightgreen"></a>
@@ -54,7 +54,11 @@ Lo que se precisa:
   autonomía es dentro de ese marco, nunca por encima.
 - **Construir en olas**: un objetivo grande se parte en features y se construye en olas cortas,
   verticales, que terminan en algo que se puede usar y probar; aceptar una ola habilita la que depende
-  de ella.
+  de ella. Cada feature es un **corte vertical** (interfaz, API, dominio y datos que hagan falta para ese
+  resultado), no una capa.
+- **Arquitectura y patrones incrementales**: la base mínima que exige la constitución se decide al
+  principio; el resto de la arquitectura y los patrones de diseño aparece cuando una feature lo
+  necesita. Diseñar todo antes de codificar es **cascada**, y SDD es cascada.
 - **Dibujar primero**: si la app es visual, una maqueta editable con el recorrido conectado antes del
   código (hoy, en Penpot).
 
@@ -294,16 +298,17 @@ desde su archivo de reglas (`AGENTS.md`, `.cursorrules`, etc.).
 
 - **No es FDD clásico:** no exige modelar todo el dominio antes de empezar, ni roles fijos, ni un tope
   de dos semanas por feature.
-- **No es SDD:** no hay fases ni aprobaciones entre documentos. Si una feature crece, se amplía la
-  misma ficha.
+- **No es SDD:** SDD es cascada (especificación → diseño → plan → tareas antes del código). FDD no tiene
+  fases ni aprobaciones entre documentos: corta en features verticales y deja crecer la arquitectura con
+  ellas. Si una feature crece, se amplía la misma ficha.
 - **No cierra tareas solo:** ni un test que pasa ni un merge marcan *integrado*.
 
 | | FDD clásico (1997) | SDD | **fdd** |
 |---|---|---|---|
 | Para | equipos humanos grandes | agentes, trabajo grande | agentes, trabajo de todos los días |
-| Antes de codificar | modelo de dominio completo | spec, diseño, plan, tareas | ficha breve; mapa incremental |
+| Antes de codificar | modelo de dominio completo | spec, diseño, plan, tareas (cascada) | ficha breve; mapa y arquitectura incrementales |
 | Reglas del proyecto | implícitas | constitución propia | la que ya existe (`AGENTS.md`…) |
-| Unidad | feature de ≤ 2 semanas | spec | ficha por feature; objetivo → features → olas |
+| Unidad | feature de ≤ 2 semanas | spec | ficha por feature vertical; objetivo → features → olas |
 | Avance | 6 hitos por feature | fases | 4 hitos, el último humano |
 | Cierre | jefe de programadores | aprobación de fases | sólo con evidencia y una persona |
 
@@ -337,6 +342,7 @@ dan por verificadas.
 
 ## Cambios
 
+- **2.4** (2026-11-05) · Pedido de Ariel: cada feature es un corte vertical; la arquitectura y los patrones de diseño crecen de a poco con las features; diseñar todo antes es cascada y SDD es cascada.
 - **2.3** (2026-11-05) · Video de Eric Risco sobre SDD, ODD, FTD y ASDD, revisado con Fable: puntual no es sin riesgo y clasificar mal no exime, un adjetivo no es un criterio, decisiones que esperan a la persona en la ficha y el informe, la ola cierra sobre el árbol integrado actual; la skill pasa a tres reglas de fondo, como el README.
 - **2.2** (2026-11-05) · Lecciones de uso: reconciliar el plan con lo ya hecho antes de lanzar un objetivo, el objetivo de la coordinadora sigue la ola en curso, las pruebas nunca tocan el estado real de la máquina y una falla no se atribuye sin línea de base.
 - **2.1** (2026-11-05) · Revisión independiente: hechos separados (aprobado, entregado, verificado, aceptado), dependencias como grafo, efecto externo incierto, evidencia en investigaciones, comparar contra una base, revisiones por riesgo, maqueta con estados y teclado, un objetivo en ejecución por proyecto, frentes siempre vinculados, auditar herramientas de terceros; Penpot como ejemplo y sin enlaces privados.
