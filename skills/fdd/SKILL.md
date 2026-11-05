@@ -2,7 +2,7 @@
 name: fdd
 description: Feature-Driven Development para agentes de IA. Una ficha por feature con nombre de resultado, dentro de la constitución y la arquitectura del proyecto (que ningún cambio rompe, ni el más chico), con mapa del dominio vivo, avance por hitos y archivos con dueño. Usar para construir o repartir una feature entre sesiones, retomar una feature de otra sesión o planear trabajo de varios frentes. Un cambio puntual y claro no necesita ficha, pero tampoco se sale de la constitución ni de la arquitectura.
 metadata:
-  version: "2.2"
+  version: "2.3"
 ---
 
 # FDD · Feature-Driven Development para agentes
@@ -14,13 +14,18 @@ vienen de FTD (Fast-Track Development) de [rsc-harness](https://github.com/ericr
 (2026-10), distinta de RSC 2.0/ASDD. Las
 lecciones de método y de dónde viene cada una están en la sección 9.
 
-Dos reglas de fondo:
+Tres reglas de fondo:
 
 1. **Nada se sale de la constitución ni de la arquitectura**, por chico que sea el cambio. Un cambio
    puntual se salta la ficha, nunca estas reglas.
 2. **La fricción es proporcional al riesgo.** Una pregunta o un cambio puntual claro se hacen y se
    verifican directo. La ficha es para lo que tiene varias decisiones, se reparte entre sesiones o hay
-   que poder retomar.
+   que poder retomar. **Puntual no es sin riesgo**: antes de tocarlo se mira qué más usa lo tocado
+   (quién lo llama, el componente compartido, la prueba que lo cubre) y se verifica también eso. Clasificar
+   mal no exime: si lo puntual crece, la ficha se abre ahí mismo con lo hecho como evidencia (video de
+   Eric Risco, 2026-11-05: un «login → entrar» trivial rompió el registro).
+3. **Lo que se afirma sin evidencia cuenta como no hecho.** El último hito, *integrado*, lo marca una
+   persona, nunca el agente.
 
 ## 1. Constitución y arquitectura
 
@@ -145,7 +150,9 @@ Qué cambia para el usuario y por qué.
 Qué incluye y qué queda afuera.
 
 ## Criterios y demostración
-Condiciones → acción → resultado observable; cómo se comprueba y qué evidencia queda.
+Condiciones → acción → resultado observable; cómo se comprueba y qué evidencia queda. Un adjetivo
+(«seguro», «rápido», «usable») no es un criterio: se convierte a condición → acción → resultado antes de
+diseñar, o se pregunta.
 
 ## Dominio, constitución y arquitectura
 Entidades y flujos de `docs/dominio.md` que toca, reglas de la constitución que la afectan y partes de
@@ -174,7 +181,8 @@ ni objetivo que registre las olas, la tabla:
 |---|---|---|---|---|
 
 ## Trabajo y decisiones
-Tareas, dependencias y decisiones tomadas con su motivo.
+Tareas, dependencias y decisiones tomadas con su motivo. **Decisiones que esperan a la persona**: qué se
+preguntó, con qué opciones, qué tarea frenó y con qué se siguió mientras tanto.
 
 ## Evidencia
 Lo observado: pruebas que pasaron, que fallaron y que no se corrieron, con la condición en
@@ -282,6 +290,8 @@ de abrir la siguiente.
   largo que la herramienta convierte en adjunto no se ejecuta (decisión del 2026-11-05).
 - **Por proyecto, un objetivo en ejecución a la vez.** Los demás esperan en una cola visible, salvo
   decisión explícita de la persona responsable (decisión del 2026-11-05).
+- **La ola se cierra sobre el árbol integrado actual**, no sobre la copia con que empezó: lo que otro
+  frente integró mientras tanto entra en la verificación del cierre.
 - **Cada ola cierra con revisión de código y una nota de estado** (qué quedó, qué falta, qué se
   decidió). Nada se marca hecho hasta que la persona responsable lo indique.
 - Dentro de una ola, los frentes que no comparten archivos pueden correr **en paralelo** (sección 8)
@@ -393,6 +403,7 @@ cierre y las decisiones de cada ronda con su fecha. Una sola fuente, que mantien
 - **«Achicar» no es rediseñar**: un pedido de ajuste visual conserva dibujo y comportamiento; se parte de
   la versión anterior del componente (el commit previo) y sólo se cambian tamaños.
 - **Informe con forma fija**: qué quedó, archivo por archivo, con la prueba que lo cubre; qué se midió;
+  qué decisiones esperan a la persona;
   qué quedó afuera y por qué; pedidos a la coordinadora; lo visto fuera de su carpeta. La última línea,
   siempre: `ESTADO: terminado | trabado: motivo | sigo: qué falta`.
 - **Revisión cruzada de lo crítico**: los caminos del dinero, la seguridad y los datos personales los
@@ -438,6 +449,11 @@ tomaron ideas, adaptadas a FDD y atribuidas «vía la revisión de Astra»):
   supuesto y revisar durante el trabajo (§7); qué se consulta y qué no (§1). No se toman su cadena de
   documentos, la clasificación de riesgo como autoridad, las ratificaciones provisionales ni el
   auto-merge.
+- **«Ninguna metodología de programación con IA es la correcta»** (video de Eric Risco, 2026-11-05;
+  repasa SDD, ODD, FTD y ASDD; FTD y ASDD son dos skills del mismo harness, RSC): «puntual no es sin
+  riesgo» y clasificar mal no exime (regla 2), un adjetivo no es un criterio y las decisiones que esperan
+  a la persona (§4, §8). No se toman la memoria tipo «cerebro», los conectores e instalador del harness,
+  «horas sin preguntar» como meta ni la cadena de fases. Análisis: `review/2026-11-05-video-risco.md`.
 - **HolaMundo / Hola AI** (video, 2026-10-23): el tamaño de la ola se mide por lo que se puede revisar y
   revertir (§6), que refuerza el detalle sólo de la próxima ola. No se toman topes universales de
   historias o criterios ni la pausa después de cada test, que contradice la autonomía autorizada.

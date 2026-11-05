@@ -11,7 +11,7 @@
 
 <p align="center">
   <a href="LICENSE"><img alt="Licencia MIT" src="https://img.shields.io/badge/licencia-MIT-blue"></a>
-  <img alt="Versión 2.2" src="https://img.shields.io/badge/versi%C3%B3n-2.2-orange">
+  <img alt="Versión 2.3" src="https://img.shields.io/badge/versi%C3%B3n-2.3-orange">
   <img alt="Claude Code" src="https://img.shields.io/badge/Claude%20Code-skill-8A63D2">
   <img alt="Codex" src="https://img.shields.io/badge/Codex-skill-10A37F">
   <a href="#lo-medido"><img alt="43 % menos tokens para retomar" src="https://img.shields.io/badge/retomar-%E2%88%9243%25%20tokens-brightgreen"></a>
@@ -176,7 +176,8 @@ Tres reglas atraviesan todo:
 1. **Nada se sale de la constitución ni de la arquitectura**, por chico que sea el cambio. Salirse es
    una decisión de la persona responsable, tomada antes de implementar.
 2. **La fricción es proporcional al riesgo.** Una pregunta o un cambio puntual claro se hacen y se
-   verifican directo, sin ficha, dentro de esas reglas.
+   verifican directo, sin ficha, dentro de esas reglas. Puntual no es sin riesgo: se mira y se verifica
+   qué más usa lo tocado; si lo puntual crece, se abre la ficha ahí mismo.
 3. **Lo que se afirma sin evidencia cuenta como no hecho.** Y el último hito, *integrado*, lo marca
    una persona, nunca el agente.
 
@@ -320,6 +321,9 @@ tomaron algunas ideas, adaptadas a FDD:
 
 - **RSC 2.0 / ASDD**, de Eric Risco (video, 2026-11-03; distinta de FTD/rsc-harness):
   demostrar el requisito en vez de acumular tests verdes y revisar durante el trabajo.
+- **«Ninguna metodología de programación con IA es la correcta»**, de Eric Risco (video, 2026-11-05; repasa
+  SDD, ODD, FTD y ASDD): puntual no es sin riesgo, un adjetivo no es un criterio y las decisiones que
+  esperan a la persona. Análisis en `review/2026-11-05-video-risco.md`.
 - **HolaMundo / Hola AI** ([hola-ai](https://github.com/nschurmann/hola-ai)): olas que se pueden revisar
   y revertir.
 - **Ponytail** ([DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail)): inspira el
@@ -333,6 +337,7 @@ dan por verificadas.
 
 ## Cambios
 
+- **2.3** (2026-11-05) · Video de Eric Risco sobre SDD, ODD, FTD y ASDD, revisado con Fable: puntual no es sin riesgo y clasificar mal no exime, un adjetivo no es un criterio, decisiones que esperan a la persona en la ficha y el informe, la ola cierra sobre el árbol integrado actual; la skill pasa a tres reglas de fondo, como el README.
 - **2.2** (2026-11-05) · Lecciones de uso: reconciliar el plan con lo ya hecho antes de lanzar un objetivo, el objetivo de la coordinadora sigue la ola en curso, las pruebas nunca tocan el estado real de la máquina y una falla no se atribuye sin línea de base.
 - **2.1** (2026-11-05) · Revisión independiente: hechos separados (aprobado, entregado, verificado, aceptado), dependencias como grafo, efecto externo incierto, evidencia en investigaciones, comparar contra una base, revisiones por riesgo, maqueta con estados y teclado, un objetivo en ejecución por proyecto, frentes siempre vinculados, auditar herramientas de terceros; Penpot como ejemplo y sin enlaces privados.
 - **2.0** (2026-11-05) · FDD 2.0: olas verticales usables, con las pruebas antes que el código y la
