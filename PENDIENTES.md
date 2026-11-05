@@ -1,7 +1,7 @@
 # Pendientes de FDD
 
-- [ ] **2026-11-05 · FDD 2.0: consolidación de lecciones y versión 2.0 (revisar, commitear y publicar).**
-  Lecciones de método de la revisión de Astra (P0.1–P0.4 y oráculo independiente) en `skills/fdd/SKILL.md`
+- [x] **2026-11-05 · FDD 2.0: consolidación de lecciones y versión 2.0 (revisar, commitear y publicar).**
+  *Hecho: commit `cd24e15` y tag `v2.0`.* Lecciones de método de la revisión de Astra (P0.1–P0.4 y oráculo independiente) en `skills/fdd/SKILL.md`
   §1, §6, §7 y §8; §9 «De dónde viene» lista las fuentes. Por precisión de Ariel, RSC 2.0 y HolaMundo
   figuran como lecturas consideradas, no adoptadas: sus ideas se adaptaron a FDD y se atribuyen «vía la
   revisión de Astra». Versión 2.0: `metadata.version` en el frontmatter, insignia y secciones «Fuentes e
@@ -9,9 +9,13 @@
   Fuentes: `D:/Apps/lienzo/docs/factory/revision-unificada-astra.md`,
   `D:/Apps/lienzo/docs/factory/propuesta-plan-factory-astra.md`.
 - [ ] **2026-11-05 · Probar Ponytail como herramienta (sin depender de ella).** Ariel todavía no decidió
-  instalarlo. En FDD queda sólo como criterio de «mínimo necesario» (§1). Si se evalúa el plugin MIT,
-  medir en un caso real si su escalera de 7 preguntas y su registro de deuda (`shortcut:`) agregan valor
-  sobre el criterio ya escrito, sin tratar sus cifras propias (−53 % código, −26 % costo) como verificadas.
+  instalarlo. En FDD queda sólo como criterio de «mínimo necesario» (§1). *Primera prueba hecha
+  (2026-11-05, informe en Lienzo `review/2026-11-05/ponytail.md`): auditada, sin instalar, aislada, una
+  corrida por brazo con una tarea chica; no mostró ahorro (−33 % código, +6 % costo), y con una corrida
+  no se concluye nada. Sus lecciones de método quedaron en §1 y §7.* Si se sigue, correr un A/B con 3 a 5
+  tareas reales y 3 corridas por brazo, y medir si su escalera de 7 preguntas y su registro de deuda
+  (`shortcut:`) agregan valor sobre el criterio ya escrito, sin tratar sus cifras propias (−53 % código,
+  −26 % costo) como verificadas.
 - [ ] **2026-11-05 · Figuras (SVG) y «Lo medido» del README posiblemente desactualizados.** Los diagramas
   `docs/img/fdd-pasos-{light,dark}.svg`, el logo y el flujo Mermaid del README reflejan el modelo anterior
   (cuatro hitos y olas) y no muestran la jerarquía Proyecto → Objetivo → Feature → Ola → Tarea ni las

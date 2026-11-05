@@ -2,7 +2,7 @@
 name: fdd
 description: Feature-Driven Development para agentes de IA. Una ficha por feature con nombre de resultado, dentro de la constitución y la arquitectura del proyecto (que ningún cambio rompe, ni el más chico), con mapa del dominio vivo, avance por hitos y archivos con dueño. Usar para construir o repartir una feature entre sesiones, retomar una feature de otra sesión o planear trabajo de varios frentes. Un cambio puntual y claro no necesita ficha, pero tampoco se sale de la constitución ni de la arquitectura.
 metadata:
-  version: "2.0"
+  version: "2.1"
 ---
 
 # FDD · Feature-Driven Development para agentes
@@ -10,7 +10,8 @@ metadata:
 Feature-Driven Development (De Luca y Coad, 1997) organizaba equipos grandes alrededor de features
 chicas con valor para el usuario. Esta skill toma lo que le sirve a un agente que trabaja en
 sesiones cortas y que otra sesión tiene que poder retomar sin el chat. La ficha y la evidencia
-vienen de FTD (Fast-Track Development) de [RSC](https://github.com/ericrisco/rsc-harness). Las
+vienen de FTD (Fast-Track Development) de [rsc-harness](https://github.com/ericrisco/rsc-harness)
+(2026-10), distinta de RSC 2.0/ASDD. Las
 lecciones de método y de dónde viene cada una están en la sección 9.
 
 Dos reglas de fondo:
@@ -46,8 +47,15 @@ Cómo se aplica:
   ¿hace falta de verdad?, ¿ya está en el repo? (si existe, se usa), ¿lo resuelve la biblioteca estándar
   o algo nativo de la plataforma?, ¿una dependencia ya instalada?, ¿se resuelve en una línea?; recién
   entonces, lo mínimo que cumple el criterio. Un atajo tomado a conciencia se anota como deuda en la
-  lista de trabajo, con su motivo; no se esconde. (Criterio inspirado en
-  [Ponytail](https://github.com/DietrichGebert/ponytail); no depende de esa herramienta ni de sus cifras.)
+  lista de trabajo, con su motivo; no se esconde. La lógica riesgosa (dinero, seguridad, parsers,
+  datos) lleva igual su prueba, por mínima que sea. La simplicidad se mide por el problema resuelto, el
+  uso y el mantenimiento, no por tener menos líneas. (Criterio inspirado en
+  [Ponytail](https://github.com/DietrichGebert/ponytail); no depende de esa herramienta ni de sus cifras.
+  Los dos límites los sugiere su prueba aislada, 2026-11-05: menos código vino con menos pruebas y menos
+  defensas.)
+- **Una herramienta de terceros se audita antes de adoptarla**: qué ejecuta, qué lee, qué escribe y si
+  usa red; y se prueba aislada, sin tocar la configuración ni los datos de trabajo (prueba de Ponytail,
+  2026-11-05).
 - FDD trabaja **dentro** de ellas. No exige crear otro archivo: si esas reglas ya están escritas, son
   ellas. Si no hay nada escrito, la primera ficha anota en `docs/dominio.md`, sección «Reglas que no
   se rompen», las que encontró en el código (qué base, qué autenticación, qué capas).
@@ -83,6 +91,9 @@ Las decisiones de diseño tomadas se escriben en una tabla en el `AGENTS.md` (o 
 - **Verificar en vivo antes de afirmar** que algo existe (un recurso en la nube, una cuenta, un
   endpoint). Con la credencial o la cuenta equivocada, muchas APIs contestan 200 y vacío.
 - **Lo irreversible se propone y espera**: dinero real, credenciales productivas, DNS, borrar datos.
+- **Si no se sabe si un efecto externo ocurrió** (un pago, un envío, un alta), se consulta al sistema
+  dueño de ese efecto antes de repetirlo; reintentar a ciegas puede duplicarlo (propuesta de Factory de
+  Astra).
 
 ## 2. Mapa del dominio
 
@@ -153,11 +164,12 @@ versión con contrato documentado corre su prueba de deriva de contratos en el m
 al cierre. Ese control no reemplaza la verificación global que el proyecto exija al cierre.
 
 ## Maqueta
-Si la feature es visual: enlace a la maqueta en Penpot y quién la aprobó (ver sección 5).
+Si la feature es visual: enlace a la maqueta editable y quién la aprobó (ver sección 5).
 
 ## Olas
-Si el plan vive en una herramienta que registra objetivos y olas, enlazar la ola; no copiar la tabla.
-Si no, la tabla:
+El plan de olas vive en el objetivo (lo propone la herramienta o la coordinadora, ver sección 6). La
+ficha enlaza la ola o las olas que implementan esta feature; no copia la tabla. Si no hay herramienta
+ni objetivo que registre las olas, la tabla:
 | Ola | Termina con (criterio observable) | Pruebas que la cierran | Depende de | Estado |
 |---|---|---|---|---|
 
@@ -183,38 +195,44 @@ Una acción concreta para quien retome.
   cuando el trabajo los necesita.
 - No se crea otro backlog: la ficha enlaza el pendiente de la lista que el proyecto ya tenga.
 
-## 5. Maqueta primero en Penpot (apps visuales)
+## 5. Maqueta primero (apps visuales)
 
-Pedido de Ariel, 2026-11-04: las maquetas y prototipos se hacen en **Penpot**.
-Antes del código de una app visual, reusar su proyecto de Penpot y su base de diseño
-central: colores, tipografía, tarjetas, componentes y estados. La identidad existente
-se conserva. En una app nueva se define una base mínima que crece con las olas.
+Antes del código de una app visual, una **maqueta editable con el recorrido conectado y una base de
+diseño central**: colores, tipografía, tarjetas, componentes y estados. Se reusa la maqueta y la base
+que la app ya tenga; la identidad existente se conserva. En una app nueva se define una base mínima que
+crece con las olas. La herramienta la elige el proyecto; la elección actual de quien mantiene FDD es
+**Penpot** (2026-11-04).
 
 - Conectar el recorrido entre pantallas para probar el objetivo de uso, no sólo imágenes aisladas.
+- La maqueta cubre los estados del recorrido (vacío, carga, error o conflicto, regreso), el teclado y
+  el foco. Que la maqueta coincida con la app en tokens no prueba que sea usable (revisión de Astra).
 - Reutilizar tokens y componentes compartidos; el diseño evoluciona con incrementos usables.
   Si los tokens se copian a mano desde el código, registrar su origen y comprobar diferencias
   antes de usar la maqueta.
 - Verificar en vivo el archivo y el recorrido del visor antes de afirmar que están guardados.
-- La ficha enlaza proyecto, archivo y flujo de Penpot con sus criterios de diseño y de uso.
-- **Quién aprueba** (decisión de Ariel, 2026-11-01): la maqueta inicial de la app la aprueba la
+- La ficha enlaza proyecto, archivo y flujo de la maqueta (en Penpot, por ejemplo) con sus criterios de
+  diseño y de uso.
+- **Quién aprueba** (decisión del 2026-11-01): la maqueta inicial de la app la aprueba la
   persona responsable antes de construir. En las olas posteriores, la coordinadora decide si hace
   falta una maqueta, la revisa y la aprueba dentro del alcance y el diseño ya autorizados, y
   registra la decisión en la ficha. Eso no autoriza cambiar alcance, identidad visual,
   arquitectura, contratos ni decisiones cerradas; ante un recorrido principal nuevo, consultar.
 - Comprobar el ancho de celular cuando corresponda al uso previsto.
 - HTML y capturas pueden acompañar la evidencia; no reemplazan la referencia editable
-  de Penpot salvo pedido explícito. Si falta la conexión, informar el impedimento y
+  salvo pedido explícito. Si falta la conexión, informar el impedimento y
   preparar su acceso, sin sustituir la herramienta elegida por cuenta propia.
 - El prototipo no acepta entregas ni sustituye la verificación de la app real.
 
 ## 6. El plan en olas
 
-Jerarquía (decisión de Ariel, 2026-11-05): **Proyecto → Objetivo → Feature → Ola → Tarea**. Un
+Organización (decisión del 2026-11-05): **Proyecto → Objetivo → Feature → Ola → Tarea**. Es cómo se
+ordena el trabajo, no una relación uno a uno: una ola puede implementar una o más features, y una
+feature puede llevar varias olas. Un
 **objetivo** es grande: se descompone en **features** (resultados de valor) que se implementan en
 **olas**, en orden, y cada ola termina con algo que se puede probar. Las features viven en el
 Markdown del objetivo; no son un nivel aparte en la herramienta. Las olas no van en ese Markdown: las
-propone la herramienta o la coordinadora, que las replanifica, y cada ola referencia las features que
-implementa (decisión de Ariel, 2026-11-05). Una
+propone la herramienta o la coordinadora, que las replanifica; el plan de olas es del objetivo y cada
+ola referencia las features que implementa. Una
 ola es un sprint: uno o varios agentes avanzan en paralelo una o más features que no comparten
 archivos. Así se construyó de punta a punta un sistema de cobros en producción: cada ola cerrada y probada antes
 de abrir la siguiente.
@@ -224,7 +242,9 @@ de abrir la siguiente.
   cuotas».
 - **Cada ola entrega algo usable y vertical**: atraviesa sólo las capas necesarias para su resultado.
   Base, arquitectura y diseño crecen con las olas. Sólo la próxima ola se detalla del todo; las
-  siguientes conservan resultado y dependencias.
+  siguientes conservan resultado y dependencias. Crecer por olas no autoriza improvisar autenticación,
+  durabilidad ni permisos: eso sigue la arquitectura desde la primera ola (propuesta de FDD 2.0 y lectura
+  de HolaMundo).
 - **La primera ola llega al resultado, no a media capa** (Astra P0.2). Una ola que termina en «datos
   listos» o «encargo recibido» no es todavía una entrega usable: la primera porción debe llegar hasta el
   resultado que una persona puede ver y probar de punta a punta. Una tarea de infraestructura puede ser
@@ -232,7 +252,8 @@ de abrir la siguiente.
 - **El tamaño de la ola se mide por lo que se puede revisar y revertir.** Cuanto más grande la entrega
   de una vez, más tarde aparecen los desacuerdos y más caro es corregir. Sin topes universales de
   criterios, archivos o líneas: un cambio de permisos o de recuperación necesita más casos que uno
-  visual. (Idea tomada de HolaMundo vía la revisión de Astra.)
+  visual. («Revisar y revertir» es idea de HolaMundo, vía la revisión de Astra; de esa lectura la
+  revisión de Astra conserva «historia vertical pequeña, sin máximos universales».)
 - **Una sola fuente editable; la revisión que se ejecuta es derivada e inmutable** (Astra P0.1). Cada
   cosa del plan se edita en un solo lugar (las features, en el Markdown del objetivo; las olas, donde se
   replanifican). Cada intento usa una revisión derivada de esa fuente, congelada para ese intento y con
@@ -250,6 +271,10 @@ de abrir la siguiente.
 - **Las dependencias entre olas van en una tabla** (ola, esfuerzo, depende de). Lo que bloquea
   producción pero no el desarrollo (credenciales, definiciones del cliente) es una ola 0 que corre en
   paralelo; mientras tanto se trabaja con valores de ejemplo.
+- **Una lista ordenada no es el grafo.** Las dependencias se declaran y se revisan antes de ejecutar, y
+  no obligan a correr todo en serie: lo que no depende de nada pendiente puede avanzar (Astra P1).
+- **Por proyecto, un objetivo en ejecución a la vez.** Los demás esperan en una cola visible, salvo
+  decisión explícita de la persona responsable (decisión del 2026-11-05).
 - **Cada ola cierra con revisión de código y una nota de estado** (qué quedó, qué falta, qué se
   decidió). Nada se marca hecho hasta que la persona responsable lo indique.
 - Dentro de una ola, los frentes que no comparten archivos pueden correr **en paralelo** (sección 8)
@@ -267,13 +292,14 @@ cierre y las decisiones de cada ronda con su fecha. Una sola fuente, que mantien
 - Si no, `docs/estado.md`, o un enlace explícito en la ficha al documento que cumple ese papel.
 - No se mantienen dos estados del mismo plan.
 - **Una ola lanzada a mano no mueve el registro.** Si la herramienta sólo sigue lo que despacha ella,
-  la coordinadora registra el avance al asignar (en curso) y al integrar o aceptar (entregada), con el
-  motivo. Lo preferible es lanzar la ola por la herramienta para que el seguimiento sea de punta a punta.
+  la coordinadora registra cada paso por separado, con su motivo: al asignar (en curso), al recibir la
+  entrega (entregada), al integrarla (integrada) y, cuando la persona la acepta, aceptada. Integrar no es
+  aceptar. Lo preferible es lanzar la ola por la herramienta para que el seguimiento sea de punta a punta.
 - **Aceptar una ola habilita la siguiente que depende de ella**, no la cadena. Una ola sin
   dependencias pendientes puede asignarse a un frente libre; verificar no es aceptar. Cambiar esa regla
-  —encadenar olas por verificación en vez de por aceptación— no se hace reusando el supervisor ni cambiando
-  un predicado: es un cambio de contrato, con su tipo de dependencia y su autoridad versionados, decidido
-  por la persona responsable (Astra P0.3).
+  —encadenar olas por verificación en vez de por aceptación— no es un ajuste interno de la herramienta:
+  es un cambio del contrato entre olas, con el tipo de dependencia y quién la habilita escritos y
+  versionados, decidido por la persona responsable (Astra P0.3).
 - **La metodología queda visible para quien usa la app**: una página o ayuda resume el flujo y enlaza
   esta skill y el plan fuente, sin agregar reglas propias.
 
@@ -288,11 +314,17 @@ cierre y las decisiones de cada ronda con su fecha. Una sola fuente, que mantien
 
 - Un turno terminado, un test aislado o un merge no mueven un hito solos.
 - Lo que se afirma sin evidencia cuenta como no hecho.
+- **Aprobar un plan no acepta sus entregas**; entregado no es correcto y verde no es aceptado. Aceptar y
+  cerrar son decisiones de la persona (Astra P0.3).
 - **Verificado es por el camino real.** La ficha ordena el trabajo, pero no encuentra defectos: los más
   caros aparecen corriendo el cambio como corre de verdad (el proceso arrancado como en producción, el
   binario real, la medición repetida), no con dobles ni con el arnés de pruebas solo. Un test que recorre
   una carpeta vacía pasa sin verificar nada; un runner que agrega rutas que producción no tiene oculta
   justo esos errores. Al menos un criterio de cada feature se comprueba por el camino real.
+- **En documentos e investigaciones, el criterio es de contenido y fuentes**: lo inferido va separado de
+  lo observado, y lo incierto se declara incierto, no aprobado (propuesta de Factory de Astra, F14).
+- **Una mejora del método se afirma comparando** contra una base de complejidad similar, no con una
+  corrida suelta (propuesta de FDD 2.0; prueba de Ponytail).
 - **Demostrar el requisito, no acumular tests verdes** (idea tomada de RSC 2.0 vía la revisión de
   Astra). Un agente puede superar sus
   pruebas y construir igual un producto distinto del pedido. Por eso cada criterio dice qué podrá hacer la
@@ -352,7 +384,14 @@ cierre y las decisiones de cada ronda con su fecha. Una sola fuente, que mantien
   siempre: `ESTADO: terminado | trabado: motivo | sigo: qué falta`.
 - **Revisión cruzada de lo crítico**: los caminos del dinero, la seguridad y los datos personales los
   revisa otro frente, no el que los escribió. Todo hallazgo alto se corrige con su prueba. «Lo revisó
-  otra IA» no reemplaza la evidencia del criterio.
+  otra IA» no reemplaza la evidencia del criterio. Cada revisión adicional cubre un riesgo distinto;
+  repetir la misma revisión no suma evidencia. Se revisa más donde el riesgo es mayor, y el resultado se
+  mide también en incidentes y retrabajo, no sólo en hallazgos (artículo de review de Anthropic, vía la
+  revisión de Astra).
+- **Ninguna sesión del proyecto queda sin vínculo**: informa a la coordinadora o se declara personal. La
+  coordinadora asigna enseguida trabajo sin dependencias pendientes a un frente libre, o lo cierra si
+  está integrado y no tiene tarea siguiente, sin consultar (práctica de coordinación, 2026-11-05).
+- El nombre del encargo dice su ola y se actualiza al reasignarlo.
 - **Presupuesto o cupo de los agentes: asignar, atribuir y frenar son tres cosas** (Astra P0.4). Sin
   consumo atribuible se dice «sin dato», que no cuenta como margen, y no se infiere restando lecturas
   globales. Pausar nuevas admisiones no corta lo que ya corre ni garantiza un techo duro: se declara qué
@@ -368,14 +407,16 @@ Fuentes adoptadas:
 
 - **FDD 1997** (De Luca y Coad): feature con valor para el usuario, modelo del dominio compartido,
   propiedad de clases/archivos y avance contado por hitos. Resumen en `docs/fdd-1997.md`.
-- **FTD / RSC** ([rsc-harness](https://github.com/ericrisco/rsc-harness), MIT): la ficha, la constitución
-  y «lo que se afirma sin evidencia cuenta como no hecho».
-- **Revisión de Astra** (revisión unificada de Factory y FDD 2.0 en
-  [Lienzo](https://github.com/arielelevy/lienzo/blob/main/docs/factory/revision-unificada-astra.md),
-  2026-11-04, y su [propuesta de Factory](https://github.com/arielelevy/lienzo/blob/main/docs/factory/propuesta-plan-factory-astra.md)):
-  P0.1 una sola fuente editable y una revisión ejecutable derivada (§6); P0.2 la primera ola llega al
-  resultado (§6); P0.3 la aceptación entre olas no se reemplaza por verificación (§6); P0.4 asignar,
-  atribuir y frenar el presupuesto son tres cosas (§8); el oráculo no lo cambia quien implementa (§7).
+- **FTD** ([rsc-harness](https://github.com/ericrisco/rsc-harness), 2026-10, MIT; distinta de RSC 2.0/ASDD):
+  la ficha, la constitución y «lo que se afirma sin evidencia cuenta como no hecho».
+- **Revisión de Astra** (revisión unificada de Factory y FDD 2.0, 2026-11-04, y su propuesta de
+  Factory; repositorio privado de Lienzo): P0.1 una sola fuente editable y una revisión ejecutable
+  derivada (§6); P0.2 la primera ola llega al resultado (§6); P0.3 la aceptación entre olas no se
+  reemplaza por verificación, y aprobar, entregar o dar verde no es aceptar (§6, §7); P1 las
+  dependencias son un grafo declarado, no una lista (§6); P0.4 asignar, atribuir y frenar el
+  presupuesto son tres cosas (§8); el oráculo no lo cambia quien implementa (§7); ante un efecto
+  externo incierto se consulta al sistema dueño (§1); F14 el criterio de documentos e investigaciones
+  (§7); la maqueta cubre estados, teclado y foco (§5).
 
 Lecturas consideradas, no adoptadas como metodología (las analizó la revisión de Astra; de ellas se
 tomaron ideas, adaptadas a FDD y atribuidas «vía la revisión de Astra»):
@@ -388,12 +429,15 @@ tomaron ideas, adaptadas a FDD y atribuidas «vía la revisión de Astra»):
   revertir (§6), que refuerza el detalle sólo de la próxima ola. No se toman topes universales de
   historias o criterios ni la pausa después de cada test, que contradice la autonomía autorizada.
 - **Ponytail** ([DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail), MIT): inspira la
-  escalera de «lo mínimo necesario» (§1). No se instaló; sus cifras propias no están verificadas.
-- **Artículo de review de Anthropic**: revisar por riesgo y medir también incidentes y retrabajo; otra IA
-  no reemplaza la evidencia (§8).
+  escalera de «lo mínimo necesario» (§1). No se instaló; una prueba aislada de una corrida por brazo
+  (2026-11-05) no mostró ahorro (−33 % código, +6 % costo). De esa prueba salen la auditoría previa de
+  herramientas, que la lógica riesgosa lleve su prueba (§1) y comparar contra una base antes de afirmar
+  una mejora (§7). Sus cifras propias no están verificadas.
+- **Artículo de review de Anthropic**: cada revisión cubre un riesgo distinto, revisar por riesgo y medir
+  también incidentes y retrabajo; otra IA no reemplaza la evidencia (§8).
 
-Ninguna herramienta de terceros se instaló ni se ejecutó para esto, y ninguna cifra ajena se da por
-medida en otro proyecto.
+Ninguna herramienta de terceros se instaló para esto (Ponytail sólo se probó aislado, como se dice
+arriba), y ninguna cifra ajena se da por medida en otro proyecto.
 
 ## Qué no hace
 

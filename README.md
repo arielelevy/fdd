@@ -11,7 +11,7 @@
 
 <p align="center">
   <a href="LICENSE"><img alt="Licencia MIT" src="https://img.shields.io/badge/licencia-MIT-blue"></a>
-  <img alt="Versión 2.0" src="https://img.shields.io/badge/versi%C3%B3n-2.0-orange">
+  <img alt="Versión 2.1" src="https://img.shields.io/badge/versi%C3%B3n-2.1-orange">
   <img alt="Claude Code" src="https://img.shields.io/badge/Claude%20Code-skill-8A63D2">
   <img alt="Codex" src="https://img.shields.io/badge/Codex-skill-10A37F">
   <a href="#lo-medido"><img alt="43 % menos tokens para retomar" src="https://img.shields.io/badge/retomar-%E2%88%9243%25%20tokens-brightgreen"></a>
@@ -55,7 +55,8 @@ Lo que se precisa:
 - **Construir en olas**: un objetivo grande se parte en features y se construye en olas cortas,
   verticales, que terminan en algo que se puede usar y probar; aceptar una ola habilita la que depende
   de ella.
-- **Dibujar primero**: si la app es visual, una maqueta en Penpot antes del código.
+- **Dibujar primero**: si la app es visual, una maqueta editable con el recorrido conectado antes del
+  código (hoy, en Penpot).
 
 ## La idea
 
@@ -102,8 +103,8 @@ proceso y Coad aportó el modelado de objetos y la idea de *feature*.
 | 🗂️ | **Una ficha por feature** | Objetivo, alcance, criterios con su demostración, dominio, archivos, decisiones, evidencia y próximo paso en un lugar |
 | 🚦 | **Hitos**: diseñado → implementado → verificado → integrado | Se distingue lo propuesto de lo hecho y de lo integrado |
 | 🔒 | **Decisiones cerradas** | Una tabla de tema, decisión y por qué, que no se reabre; los invariantes con una sola puerta; el doc manda antes que el código |
-| 🎨 | **Maqueta primero** (apps visuales) | Maqueta en Penpot con el diseño central de la app y un recorrido conectado; la inicial la aprueba la persona y las de olas posteriores, la coordinadora dentro de lo autorizado |
-| 🌊 | **Olas** | Proyecto → Objetivo → Feature → Ola → Tarea: las features viven en el Markdown del objetivo y se construyen en incrementos verticales usables, cada uno con un criterio observable y sus casos críticos escritos antes que el código; aceptar una ola habilita la que depende de ella; la verificación global, una vez al cierre |
+| 🎨 | **Maqueta primero** (apps visuales) | Maqueta editable (hoy, en Penpot) con el diseño central de la app, un recorrido conectado y sus estados; la inicial la aprueba la persona y las de olas posteriores, la coordinadora dentro de lo autorizado |
+| 🌊 | **Olas** | Proyecto → Objetivo → Feature → Ola → Tarea, como organización y no uno a uno (una ola puede implementar varias features y una feature llevar varias olas): las features viven en el Markdown del objetivo, el plan de olas lo propone la herramienta o la coordinadora, y se construyen en incrementos verticales usables, cada uno con un criterio observable y sus casos críticos escritos antes que el código; aceptar una ola habilita la que depende de ella; la verificación global, una vez al cierre |
 | 📍 | **Estado para retomar** | Lo primero que se lee: el registro de objetivos y olas de la herramienta del proyecto o, si no hay, `docs/estado.md`. Una sola fuente, que lleva la coordinadora aunque la ola se haya lanzado a mano |
 | 🔑 | **Archivos con dueño** | Dos agentes no editan lo mismo; los compartidos son de la coordinadora; los contratos entre frentes se respetan |
 | 🧭 | **Una sola coordinadora** | Reparte, integra y lleva el estado; las preguntas a la persona pasan por un solo lugar, con contexto, y cada respuesta vuelve a quien preguntó |
@@ -123,7 +124,7 @@ flowchart LR
     B -- "no" --> D["Mapa del<br/>dominio"]
     D --> E["Ficha<br/>con olas"]
     E --> V{"¿Visual?"}
-    V -- "sí" --> M["Maqueta en<br/>Penpot aprobada"]
+    V -- "sí" --> M["Maqueta editable<br/>aprobada"]
     M --> F[["diseñado"]]
     V -- "no" --> F
 
@@ -205,7 +206,7 @@ El detalle está en las secciones 6 y 8 de [`skills/fdd/SKILL.md`](skills/fdd/SK
 
 ## Lo medido
 
-Piloto en [Lienzo](https://github.com/arielelevy/lienzo) (2026-10-26): dos sesiones nuevas de Codex,
+Piloto en Lienzo (2026-10-26, repositorio privado): dos sesiones nuevas de Codex,
 con el mismo modelo y de a una, contestaron las mismas cinco preguntas para retomar una feature ya
 implementada. Una tenía el mapa del dominio y la otra no.
 
@@ -283,8 +284,8 @@ desde su archivo de reglas (`AGENTS.md`, `.cursorrules`, etc.).
    sola por su descripción, o se la nombrás («usá fdd»).
 2. La primera ficha del proyecto crea `docs/dominio.md` con lo que el agente ya leyó para esa feature;
    no hace falta un relevamiento previo.
-3. Si es un objetivo grande, el plan lo parte en features y olas en su Markdown; sólo la próxima ola
-   se detalla del todo.
+3. Si es un objetivo grande, sus features van en el Markdown del objetivo; las olas las propone la
+   herramienta o la coordinadora, y sólo la próxima ola se detalla del todo.
 4. Para retomar, la sesión nueva lee el estado, el mapa y la ficha, y sigue desde **Próximo paso**.
 5. Cuando revisaste la evidencia, marcás vos el hito **integrado**.
 
@@ -308,31 +309,33 @@ desde su archivo de reglas (`AGENTS.md`, `.cursorrules`, etc.).
 ## Fuentes e investigaciones
 
 La base es FDD clásico y FTD (ver [Créditos](#créditos)). Las lecciones de método de la versión 2.0
-salen sobre todo de la **revisión de Astra** de Lienzo Factory
-([revisión unificada](https://github.com/arielelevy/lienzo/blob/main/docs/factory/revision-unificada-astra.md)
-y [propuesta](https://github.com/arielelevy/lienzo/blob/main/docs/factory/propuesta-plan-factory-astra.md)):
-una sola fuente editable del plan, la primera ola que llega al resultado, aceptar no es verificar y el
+salen sobre todo de la **revisión de Astra** de Lienzo Factory (revisión unificada de Astra y su
+propuesta de Factory, 2026-11-04, repositorio privado): una sola fuente editable del plan, la primera
+ola que llega al resultado, aceptar no es verificar, las dependencias como grafo declarado y el
 presupuesto de los agentes como tres capacidades (asignar, atribuir, frenar). Dónde se aplica cada una:
 sección 9 de [`skills/fdd/SKILL.md`](skills/fdd/SKILL.md).
 
 Lecturas consideradas, no adoptadas como metodología. Las analizó la revisión de Astra; de ellas se
 tomaron algunas ideas, adaptadas a FDD:
 
-- **RSC 2.0 / ASDD**, de Eric Risco ([rsc-harness](https://github.com/ericrisco/rsc-harness)):
+- **RSC 2.0 / ASDD**, de Eric Risco (video, 2026-11-03; distinta de FTD/rsc-harness):
   demostrar el requisito en vez de acumular tests verdes y revisar durante el trabajo.
 - **HolaMundo / Hola AI** ([hola-ai](https://github.com/nschurmann/hola-ai)): olas que se pueden revisar
   y revertir.
 - **Ponytail** ([DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail)): inspira el
-  criterio de lo mínimo necesario antes de escribir código; no se instaló.
+  criterio de lo mínimo necesario antes de escribir código. No se instaló; una prueba aislada de una
+  corrida por brazo no mostró ahorro (−33 % código, +6 % costo).
 - **Review en Anthropic** ([artículo](https://claude.dev/blog/solving-code-review-at-anthropic/)):
-  revisar por riesgo; otra IA no reemplaza la evidencia.
+  revisar por riesgo, cada revisión cubre un riesgo distinto; otra IA no reemplaza la evidencia.
 
-No se instalaron ni ejecutaron herramientas de terceros, y sus cifras propias no se dan por verificadas.
+No se instalaron herramientas de terceros (Ponytail sólo se probó aislado), y sus cifras propias no se
+dan por verificadas.
 
 ## Cambios
 
+- **2.1** (2026-11-05) · Revisión independiente: hechos separados (aprobado, entregado, verificado, aceptado), dependencias como grafo, efecto externo incierto, evidencia en investigaciones, comparar contra una base, revisiones por riesgo, maqueta con estados y teclado, un objetivo en ejecución por proyecto, frentes siempre vinculados, auditar herramientas de terceros; Penpot como ejemplo y sin enlaces privados.
 - **2.0** (2026-11-05) · FDD 2.0: olas verticales usables, con las pruebas antes que el código y la
-  verificación global una vez al cierre; maqueta primero en Penpot; coordinación de varios agentes (una
+  verificación global una vez al cierre; maqueta primero (hoy, en Penpot); coordinación de varios agentes (una
   sola coordinadora, preguntas en un solo lugar, estado para retomar); jerarquía Proyecto → Objetivo →
   Feature → Ola → Tarea; y las lecciones de la revisión de Astra y de las lecturas de arriba.
 - **0.1** (2026-10-26) · Primera versión: constitución y arquitectura, mapa del dominio, ficha por feature,
@@ -345,8 +348,9 @@ No se instalaron ni ejecutaron herramientas de terceros, y sus cifras propias no
   Feature-Driven Development* (2002). Resumen y correspondencia con esta skill en
   [docs/fdd-1997.md](docs/fdd-1997.md).
 - **FTD (Fast-Track Development)**, de donde vienen la ficha, la constitución y la exigencia de
-  evidencia: [RSC harness](https://github.com/ericrisco/rsc-harness), de `ericrisco`, licencia MIT.
-- Probado en [Lienzo](https://github.com/arielelevy/lienzo), un tablero para coordinar varios agentes
+  evidencia: [RSC harness](https://github.com/ericrisco/rsc-harness), de `ericrisco` (2026-10), licencia
+  MIT; distinta de RSC 2.0/ASDD.
+- Probado en Lienzo (repositorio privado), un tablero para coordinar varios agentes
   en paralelo. Las figuras se dibujaron con su kit de infografías, sobre
   [anatomy](https://github.com/wheresryan22/anatomy).
 
