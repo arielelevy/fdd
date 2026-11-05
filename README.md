@@ -11,7 +11,7 @@
 
 <p align="center">
   <a href="LICENSE"><img alt="Licencia MIT" src="https://img.shields.io/badge/licencia-MIT-blue"></a>
-  <img alt="Versión 0.1" src="https://img.shields.io/badge/versi%C3%B3n-0.1-orange">
+  <img alt="Versión 2.0" src="https://img.shields.io/badge/versi%C3%B3n-2.0-orange">
   <img alt="Claude Code" src="https://img.shields.io/badge/Claude%20Code-skill-8A63D2">
   <img alt="Codex" src="https://img.shields.io/badge/Codex-skill-10A37F">
   <a href="#lo-medido"><img alt="43 % menos tokens para retomar" src="https://img.shields.io/badge/retomar-%E2%88%9243%25%20tokens-brightgreen"></a>
@@ -304,6 +304,39 @@ desde su archivo de reglas (`AGENTS.md`, `.cursorrules`, etc.).
 | Unidad | feature de ≤ 2 semanas | spec | ficha por feature; objetivo → features → olas |
 | Avance | 6 hitos por feature | fases | 4 hitos, el último humano |
 | Cierre | jefe de programadores | aprobación de fases | sólo con evidencia y una persona |
+
+## Fuentes e investigaciones
+
+La base es FDD clásico y FTD (ver [Créditos](#créditos)). Las lecciones de método de la versión 2.0
+salen sobre todo de la **revisión de Astra** de Lienzo Factory
+([revisión unificada](https://github.com/arielelevy/lienzo/blob/main/docs/factory/revision-unificada-astra.md)
+y [propuesta](https://github.com/arielelevy/lienzo/blob/main/docs/factory/propuesta-plan-factory-astra.md)):
+una sola fuente editable del plan, la primera ola que llega al resultado, aceptar no es verificar y el
+presupuesto de los agentes como tres capacidades (asignar, atribuir, frenar). Dónde se aplica cada una:
+sección 9 de [`skills/fdd/SKILL.md`](skills/fdd/SKILL.md).
+
+Lecturas consideradas, no adoptadas como metodología. Las analizó la revisión de Astra; de ellas se
+tomaron algunas ideas, adaptadas a FDD:
+
+- **RSC 2.0 / ASDD**, de Eric Risco ([rsc-harness](https://github.com/ericrisco/rsc-harness)):
+  demostrar el requisito en vez de acumular tests verdes y revisar durante el trabajo.
+- **HolaMundo / Hola AI** ([hola-ai](https://github.com/nschurmann/hola-ai)): olas que se pueden revisar
+  y revertir.
+- **Ponytail** ([DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail)): inspira el
+  criterio de lo mínimo necesario antes de escribir código; no se instaló.
+- **Review en Anthropic** ([artículo](https://claude.dev/blog/solving-code-review-at-anthropic/)):
+  revisar por riesgo; otra IA no reemplaza la evidencia.
+
+No se instalaron ni ejecutaron herramientas de terceros, y sus cifras propias no se dan por verificadas.
+
+## Cambios
+
+- **2.0** (2026-11-05) · FDD 2.0: olas verticales usables, con las pruebas antes que el código y la
+  verificación global una vez al cierre; maqueta primero en Penpot; coordinación de varios agentes (una
+  sola coordinadora, preguntas en un solo lugar, estado para retomar); jerarquía Proyecto → Objetivo →
+  Feature → Ola → Tarea; y las lecciones de la revisión de Astra y de las lecturas de arriba.
+- **0.1** (2026-10-26) · Primera versión: constitución y arquitectura, mapa del dominio, ficha por feature,
+  cuatro hitos y archivos con dueño.
 
 ## Créditos
 

@@ -1,5 +1,23 @@
 # Pendientes de FDD
 
+- [ ] **2026-11-05 · FDD 2.0: consolidación de lecciones y versión 2.0 (revisar, commitear y publicar).**
+  Lecciones de método de la revisión de Astra (P0.1–P0.4 y oráculo independiente) en `skills/fdd/SKILL.md`
+  §1, §6, §7 y §8; §9 «De dónde viene» lista las fuentes. Por precisión de Ariel, RSC 2.0 y HolaMundo
+  figuran como lecturas consideradas, no adoptadas: sus ideas se adaptaron a FDD y se atribuyen «vía la
+  revisión de Astra». Versión 2.0: `metadata.version` en el frontmatter, insignia y secciones «Fuentes e
+  investigaciones» y «Cambios» del README. Sin Git: la coordinadora commitea y crea el tag `v2.0`.
+  Fuentes: `D:/Apps/lienzo/docs/factory/revision-unificada-astra.md`,
+  `D:/Apps/lienzo/docs/factory/propuesta-plan-factory-astra.md`.
+- [ ] **2026-11-05 · Probar Ponytail como herramienta (sin depender de ella).** Ariel todavía no decidió
+  instalarlo. En FDD queda sólo como criterio de «mínimo necesario» (§1). Si se evalúa el plugin MIT,
+  medir en un caso real si su escalera de 7 preguntas y su registro de deuda (`shortcut:`) agregan valor
+  sobre el criterio ya escrito, sin tratar sus cifras propias (−53 % código, −26 % costo) como verificadas.
+- [ ] **2026-11-05 · Figuras (SVG) y «Lo medido» del README posiblemente desactualizados.** Los diagramas
+  `docs/img/fdd-pasos-{light,dark}.svg`, el logo y el flujo Mermaid del README reflejan el modelo anterior
+  (cuatro hitos y olas) y no muestran la jerarquía Proyecto → Objetivo → Feature → Ola → Tarea ni las
+  lecciones nuevas. Revisar si conviene actualizarlos antes de publicar; el badge «−43 % tokens» sigue
+  siendo del piloto del 2026-10-26 (no se midió de nuevo). No se tocaron en esta consolidación.
+
 - [ ] **2026-11-01 · Maqueta inicial y criterio de la coordinadora IA en olas posteriores.** *Aplicado en `skills/fdd/SKILL.md` §5 «Quién aprueba» (y hito *diseñado* en §7), incorporado en `0942a68`; la adaptación de Lienzo (`skills/lienzo/references/fdd.md`, «Aprobación») ya dice lo mismo. Queda que Ariel confirme el cierre, como en las entradas de `0ef22fc`.* Decisión explícita de Ariel desde OpenSeec ola20: «maqueta es al principio y en las olas a criterio de la coordinadora». Mantener la maqueta inicial antes de construir la app. En las olas posteriores, la coordinadora IA decide si hace falta una maqueta nueva, la revisa y la aprueba dentro del alcance y diseño autorizados; no pedir aprobación humana por cada ajuste de UI. Esto no amplía permisos para cambiar alcance, arquitectura, contratos o decisiones cerradas. Actualizar `skills/fdd/SKILL.md:170` (§5, aprobación atribuida siempre a la persona) y coordinar su adaptación `C:/Users/ArielLevy/OneDrive - smartBI/claude-skills/lienzo/references/fdd.md:58` («aprobado por Ariel antes de construir»). Reproducción: una ola agrega un formulario a una app existente; la regla actual frena la implementación esperando aprobación humana de otra maqueta. Criterio esperado: la coordinadora registra su decisión y sigue sin esa espera. Origen: OpenSeec UX-08, maqueta `maqueta/ola20-instrucciones.html`, sesión `01a19844-e68c-7d51-9ce9-35fb5ea66458`. Entrada pendiente para incorporar en FDD; no se marca completada. Texto literal de Ariel en el transcript (2026-11-01T21:3xZ): «si es cmabio e la app de ola la mauqets es ac irterio del coordinador ia» y «mandaelo a fdd maquete es al princio y eb las oas a criterio d ela coordinadorw». Propuesta de aplicación (2026-11-04): `D:/Apps/lienzo/.temp/coordinacion/2026-11-04/fdd-global-propuesta.patch`, §5 «Quién aprueba»; sin integrar ni publicar.
 
 Las cinco propuestas se incorporaron en `0ef22fc`. Cierre solicitado por Ariel el 2026-10-31 y comprobado contra la skill. Cada entrada conserva su origen y evidencia.
