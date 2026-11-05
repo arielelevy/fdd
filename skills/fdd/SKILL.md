@@ -232,6 +232,13 @@ cierre y las decisiones de cada ronda con su fecha. Una sola fuente, que mantien
   estado; la ficha enlaza el objetivo y el plan fuente.
 - Si no, `docs/estado.md`, o un enlace explícito en la ficha al documento que cumple ese papel.
 - No se mantienen dos estados del mismo plan.
+- **Una ola lanzada a mano no mueve el registro.** Si la herramienta sólo sigue lo que despacha ella,
+  la coordinadora registra el avance al asignar (en curso) y al integrar o aceptar (entregada), con el
+  motivo. Lo preferible es lanzar la ola por la herramienta para que el seguimiento sea de punta a punta.
+- **Aceptar una ola habilita la siguiente que depende de ella**, no la cadena. Una ola sin
+  dependencias pendientes puede asignarse a un frente libre; verificar no es aceptar.
+- **La metodología queda visible para quien usa la app**: una página o ayuda resume el flujo y enlaza
+  esta skill y el plan fuente, sin agregar reglas propias.
 
 ## 7. Hitos
 
@@ -273,6 +280,13 @@ cierre y las decisiones de cada ronda con su fecha. Una sola fuente, que mantien
 - **Antes de limpiar temporales de coordinación**, buscar qué rutas citan las fichas, los contratos y los
   informes, y no borrar esas sin confirmación: la evidencia citada respalda hitos y pruebas medidas.
 - Un solo integrador por árbol: los frentes no hacen `git add`, `commit`, `checkout` ni `pull`.
+- **Integrar con otro frente a medias en el mismo árbol**: commitear sólo los archivos del frente
+  entregado y compilar desde una copia limpia de ese commit (worktree); no reiniciar el servicio si el
+  backend de otro frente está a medio cambiar. Una regresión causada por el delta ajeno se atribuye a su
+  dueño y se le avisa; no bloquea la entrega que no la causa.
+- **Pedidos nuevos de la persona durante una ola**: si tocan archivos de un frente en curso, se suman a
+  su ficha como ampliación fechada con la cita textual; si son independientes, van a un frente libre con
+  ficha propia. Si la persona insiste, se prioriza y se entrega aparte en cuanto esté.
 - **Informe con forma fija**: qué quedó, archivo por archivo, con la prueba que lo cubre; qué se midió;
   qué quedó afuera y por qué; pedidos a la coordinadora; lo visto fuera de su carpeta. La última línea,
   siempre: `ESTADO: terminado | trabado: motivo | sigo: qué falta`.
