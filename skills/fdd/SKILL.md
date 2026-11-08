@@ -2,7 +2,7 @@
 name: fdd
 description: Feature-Driven Development para agentes de IA. Una ficha por feature con nombre de resultado, dentro de la constitución y la arquitectura del proyecto (que ningún cambio rompe, ni el más chico), con mapa del dominio vivo, avance por hitos y archivos con dueño. Usar para construir o repartir una feature entre sesiones, retomar una feature de otra sesión o planear trabajo de varios frentes. Un cambio puntual y claro no necesita ficha, pero tampoco se sale de la constitución ni de la arquitectura.
 metadata:
-  version: "2.4"
+  version: "2.5"
 ---
 
 # FDD · Feature-Driven Development para agentes
@@ -25,7 +25,7 @@ Tres reglas de fondo:
    mal no exime: si lo puntual crece, la ficha se abre ahí mismo con lo hecho como evidencia (video de
    Eric Risco, 2026-11-05: un «login → entrar» trivial rompió el registro).
 3. **Lo que se afirma sin evidencia cuenta como no hecho.** El último hito, *integrado*, lo marca una
-   persona, nunca el agente.
+   persona, nunca el agente (ni siquiera por delegación: ver sección 7).
 
 ## 1. Constitución y arquitectura
 
@@ -95,7 +95,11 @@ Las decisiones de diseño tomadas se escriben en una tabla en el `AGENTS.md` (o 
   corrige el doc (y se avisa); nunca queda el código diciendo una cosa y el doc otra.
 - **Verificar en vivo antes de afirmar** que algo existe (un recurso en la nube, una cuenta, un
   endpoint). Con la credencial o la cuenta equivocada, muchas APIs contestan 200 y vacío.
-- **Lo irreversible se propone y espera**: dinero real, credenciales productivas, DNS, borrar datos.
+- **Lo irreversible se propone y espera**: dinero real, credenciales productivas, DNS, borrar datos, y
+  también publicar y pasar a producción. **Única excepción** (decisión de la persona responsable,
+  2026-11-07): un objetivo cuya configuración autoriza expresamente publicar y pasar a producción al
+  terminar (en Lienzo, el interruptor «Release al final») puede hacerlo sin esperar, y sólo para ese
+  objetivo; la excepción no se hereda ni se supone. Sin ella, se propone y espera.
 - **Si no se sabe si un efecto externo ocurrió** (un pago, un envío, un alta), se consulta al sistema
   dueño de ese efecto antes de repetirlo; reintentar a ciegas puede duplicarlo (propuesta de Factory de
   Astra).
@@ -248,9 +252,11 @@ ordena el trabajo, no una relación uno a uno: una ola puede implementar una o m
 feature puede llevar varias olas. Un
 **objetivo** es grande: se descompone en **features** (resultados de valor) que se implementan en
 **olas**, en orden, y cada ola termina con algo que se puede probar. Las features viven en el
-Markdown del objetivo; no son un nivel aparte en la herramienta. Las olas no van en ese Markdown: las
-propone la herramienta o la coordinadora, que las replanifica; el plan de olas es del objetivo y cada
-ola referencia las features que implementa. Una
+Markdown del objetivo; no son un nivel aparte en la herramienta. **Las olas tienen dos fuentes** (decisión
+de la persona responsable, 2026-11-07): si el texto del objetivo ya trae olas, la herramienta las toma
+como punto de partida; la herramienta o la coordinadora proponen y replanifican, y **manda la propuesta
+de olas que la persona acepta**, no el texto. El plan de olas es del objetivo y cada ola referencia las
+features que implementa. Una
 ola es un sprint: uno o varios agentes avanzan en paralelo una o más features que no comparten
 archivos. Así se construyó de punta a punta un sistema de cobros en producción: cada ola cerrada y probada antes
 de abrir la siguiente.
@@ -299,14 +305,17 @@ de abrir la siguiente.
   objetivo como contexto; al aceptarse la ola, pasa a la siguiente. Corta y en una línea: un comando
   largo que la herramienta convierte en adjunto no se ejecuta (decisión del 2026-11-05).
 - **Por proyecto, un objetivo en ejecución a la vez.** Los demás esperan en una cola visible, salvo
-  decisión explícita de la persona responsable (decisión del 2026-11-05).
+  decisión explícita de la persona responsable (decisión del 2026-11-05). Si el proyecto tiene varios
+  repos, el límite real es el árbol de trabajo: dos objetivos sobre el mismo repo no corren juntos, porque
+  el cierre de una ola commitea lo pendiente del árbol y se llevaría el trabajo ajeno.
 - **La ola se cierra sobre el árbol integrado actual**, no sobre la copia con que empezó: lo que otro
   frente integró mientras tanto entra en la verificación del cierre.
 - **Cada ola cierra con revisión de código y una nota de estado** (qué quedó, qué falta, qué se
   decidió). Nada se marca hecho hasta que la persona responsable lo indique.
 - Dentro de una ola, los frentes que no comparten archivos pueden correr **en paralelo** (sección 8)
   cuando compensa; un frente por funcionalidad de punta a punta.
-- Lo que bloquea una ola de producción (dinero real, DNS, credenciales) va al final y espera confirmación.
+- Lo que bloquea una ola de producción (dinero real, DNS, credenciales) va al final y espera confirmación
+  (salvo la excepción por objetivo de la sección 1, que sólo cubre publicar y pasar a producción).
 
 ### Estado para retomar
 
@@ -320,13 +329,16 @@ cierre y las decisiones de cada ronda con su fecha. Una sola fuente, que mantien
 - No se mantienen dos estados del mismo plan.
 - **Una ola lanzada a mano no mueve el registro.** Si la herramienta sólo sigue lo que despacha ella,
   la coordinadora registra cada paso por separado, con su motivo: al asignar (en curso), al recibir la
-  entrega (entregada), al integrarla (integrada) y, cuando la persona la acepta, aceptada. Integrar no es
-  aceptar. Lo preferible es lanzar la ola por la herramienta para que el seguimiento sea de punta a punta.
+  entrega (entregada), al integrarla (integrada) y, cuando la persona la acepta (o la coordinadora, por
+  una delegación escrita que se cita), aceptada. Integrar no es aceptar. Lo preferible es lanzar la ola por la herramienta para que el seguimiento sea de punta a punta.
 - **Aceptar una ola habilita la siguiente que depende de ella**, no la cadena. Una ola sin
   dependencias pendientes puede asignarse a un frente libre; verificar no es aceptar. Cambiar esa regla
   —encadenar olas por verificación en vez de por aceptación— no es un ajuste interno de la herramienta:
   es un cambio del contrato entre olas, con el tipo de dependencia y quién la habilita escritos y
-  versionados, decidido por la persona responsable (Astra P0.3).
+  versionados, decidido por la persona responsable (Astra P0.3). **Quién acepta:** la persona, salvo
+  delegación escrita de ella, que se cita en el registro de la aceptación (en Lienzo: la delegación del
+  2026-11-05 a la coordinadora y el modo «Auto» del objetivo, 2026-11-07). La delegación cubre **olas**; no
+  alcanza al hito *integrado* de la feature ni del objetivo.
 - **La metodología queda visible para quien usa la app**: una página o ayuda resume el flujo y enlaza
   esta skill y el plan fuente, sin agregar reglas propias.
 
@@ -337,12 +349,14 @@ cierre y las decisiones de cada ronda con su fecha. Una sola fuente, que mantien
 | diseñado | objetivo, alcance, criterios con su demostración, dominio, constitución y arquitectura; dueños, efectos compartidos y olas cuando correspondan; si es visual, maqueta aprobada según la sección 5 |
 | implementado | el cambio está hecho en el árbol o en una rama |
 | verificado | cada criterio tiene evidencia observada, no afirmada |
-| integrado | **lo marca una persona**, nunca el agente |
+| integrado | **lo marca una persona**, nunca el agente (la delegación de aceptar olas no lo cubre) |
 
 - Un turno terminado, un test aislado o un merge no mueven un hito solos.
 - Lo que se afirma sin evidencia cuenta como no hecho.
 - **Aprobar un plan no acepta sus entregas**; entregado no es correcto y verde no es aceptado. Aceptar y
-  cerrar son decisiones de la persona (Astra P0.3).
+  cerrar son decisiones de la persona (Astra P0.3), **salvo delegación escrita que se cita** (sección 6);
+  esa delegación cubre olas y **nunca el hito *integrado*** de la feature o del objetivo, que sigue siendo de
+  la persona.
 - **Verificado es por el camino real.** La ficha ordena el trabajo, pero no encuentra defectos: los más
   caros aparecen corriendo el cambio como corre de verdad (el proceso arrancado como en producción, el
   binario real, la medición repetida), no con dobles ni con el arnés de pruebas solo. Un test que recorre
@@ -397,9 +411,12 @@ cierre y las decisiones de cada ronda con su fecha. Una sola fuente, que mantien
 - Lo que un frente encuentra fuera de sus archivos lo anota en una nota propia, no lo edita.
 - **Antes de limpiar temporales de coordinación**, buscar qué rutas citan las fichas, los contratos y los
   informes, y no borrar esas sin confirmación: la evidencia citada respalda hitos y pruebas medidas.
-- Un solo integrador por árbol: los frentes no hacen `git add`, `commit`, `checkout` ni `pull`.
+- Un solo integrador por árbol: los frentes no hacen `git add`, `commit`, `checkout` ni `pull`. El
+  integrador commitea sólo los archivos de cada frente entregado.
 - **Integrar con otro frente a medias en el mismo árbol**: commitear sólo los archivos del frente
-  entregado y compilar desde una copia limpia de ese commit (worktree); no reiniciar el servicio si el
+  entregado y, si hace falta compilar o probar aislado, hacerlo desde una copia limpia de ese commit
+  (un worktree sólo cuando de verdad hace falta aislar; por defecto, el mismo árbol con archivos
+  disjuntos); no reiniciar el servicio si el
   backend de otro frente está a medio cambiar. Una regresión causada por el delta ajeno se atribuye a su
   dueño y se le avisa; no bloquea la entrega que no la causa.
 - **Pedidos nuevos de la persona durante una ola**: si tocan archivos de un frente en curso, se suman a
@@ -426,6 +443,9 @@ cierre y las decisiones de cada ronda con su fecha. Una sola fuente, que mantien
   coordinadora asigna enseguida trabajo sin dependencias pendientes a un frente libre, o lo cierra si
   está integrado y no tiene tarea siguiente, sin consultar (práctica de coordinación, 2026-11-05).
 - El nombre del encargo dice su ola y se actualiza al reasignarlo.
+- **Un agente que no carga skills ni recibe hooks (por ejemplo Kiro) no ve esta skill**: las reglas que
+  necesita (sus archivos, qué corre y cómo, que no hace git, el cierre con `ESTADO:`) van en el encargo, no se
+  dan por sabidas (práctica de coordinación, 2026-11-07).
 - **Presupuesto o cupo de los agentes: asignar, atribuir y frenar son tres cosas** (Astra P0.4). Sin
   consumo atribuible se dice «sin dato», que no cuenta como margen, y no se infiere restando lecturas
   globales. Pausar nuevas admisiones no corta lo que ya corre ni garantiza un techo duro: se declara qué

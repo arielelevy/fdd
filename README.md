@@ -11,20 +11,20 @@
 
 <p align="center">
   <a href="LICENSE"><img alt="Licencia MIT" src="https://img.shields.io/badge/licencia-MIT-blue"></a>
-  <img alt="Versión 2.4" src="https://img.shields.io/badge/versi%C3%B3n-2.4-orange">
+  <img alt="Versión 2.5" src="https://img.shields.io/badge/versi%C3%B3n-2.5-orange">
   <img alt="Claude Code" src="https://img.shields.io/badge/Claude%20Code-skill-8A63D2">
   <img alt="Codex" src="https://img.shields.io/badge/Codex-skill-10A37F">
-  <a href="#lo-medido"><img alt="43 % menos tokens para retomar" src="https://img.shields.io/badge/retomar-%E2%88%9243%25%20tokens-brightgreen"></a>
+  <a href="#lo-medido"><img alt="Piloto de una corrida por condición: 43 % menos tokens para retomar" src="https://img.shields.io/badge/piloto%20de%201%20corrida-retomar%20%E2%88%9243%25%20tokens-yellow"></a>
 </p>
 
 > **EN** · Feature-Driven Development rebuilt for AI coding agents: one card per feature inside the
 > project's constitution, a living domain map, four milestones and file ownership, so a fresh session
-> can pick the work up without the chat. In a pilot, the domain map cut the tokens needed to resume
-> a feature by 43 % with the same accuracy.
+> can pick the work up without the chat. In a one-run-per-condition pilot (a first hint, not a
+> stable measurement), the domain map cut the tokens needed to resume a feature by 43 % with the same accuracy.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/img/fdd-pasos-dark.svg">
-  <img alt="Una ficha avanza por cuatro estaciones (diseñado, implementado, verificado, integrado) sobre una base que es la constitución del proyecto; la última estación tiene una cerradura roja porque la marca una persona; detrás, la hoja del mapa del dominio." src="docs/img/fdd-pasos-light.svg">
+  <img alt="Una ficha avanza por cuatro estaciones (diseñado, implementado, verificado, integrado) sobre una base que es la constitución del proyecto; la última estación tiene una cerradura roja porque la marca una persona; detrás, la hoja del mapa del dominio; al frente, el riel Proyecto → Objetivo → Feature → Ola → Tarea." src="docs/img/fdd-pasos-light.svg">
 </picture>
 
 ---
@@ -108,7 +108,7 @@ proceso y Coad aportó el modelado de objetos y la idea de *feature*.
 | 🚦 | **Hitos**: diseñado → implementado → verificado → integrado | Se distingue lo propuesto de lo hecho y de lo integrado |
 | 🔒 | **Decisiones cerradas** | Una tabla de tema, decisión y por qué, que no se reabre; los invariantes con una sola puerta; el doc manda antes que el código |
 | 🎨 | **Maqueta primero** (apps visuales) | Maqueta editable (hoy, en Penpot) con el diseño central de la app, un recorrido conectado y sus estados; la inicial la aprueba la persona y las de olas posteriores, la coordinadora dentro de lo autorizado |
-| 🌊 | **Olas** | Proyecto → Objetivo → Feature → Ola → Tarea, como organización y no uno a uno (una ola puede implementar varias features y una feature llevar varias olas): las features viven en el Markdown del objetivo, el plan de olas lo propone la herramienta o la coordinadora, y se construyen en incrementos verticales usables, cada uno con un criterio observable y sus casos críticos escritos antes que el código; aceptar una ola habilita la que depende de ella; la verificación global, una vez al cierre |
+| 🌊 | **Olas** | Proyecto → Objetivo → Feature → Ola → Tarea, como organización y no uno a uno (una ola puede implementar varias features y una feature llevar varias olas): las features viven en el Markdown del objetivo, el plan de olas lo propone la herramienta o la coordinadora (si el texto del objetivo ya trae olas, son el punto de partida y manda la propuesta que la persona acepta), y se construyen en incrementos verticales usables, cada uno con un criterio observable y sus casos críticos escritos antes que el código; aceptar una ola habilita la que depende de ella (la persona acepta, salvo delegación escrita que se cita; la delegación cubre olas, no *integrado*); la verificación global, una vez al cierre |
 | 📍 | **Estado para retomar** | Lo primero que se lee: el registro de objetivos y olas de la herramienta del proyecto o, si no hay, `docs/estado.md`. Una sola fuente, que lleva la coordinadora aunque la ola se haya lanzado a mano |
 | 🔑 | **Archivos con dueño** | Dos agentes no editan lo mismo; los compartidos son de la coordinadora; los contratos entre frentes se respetan |
 | 🧭 | **Una sola coordinadora** | Reparte, integra y lleva el estado; las preguntas a la persona pasan por un solo lugar, con contexto, y cada respuesta vuelve a quien preguntó |
@@ -183,7 +183,8 @@ Tres reglas atraviesan todo:
    verifican directo, sin ficha, dentro de esas reglas. Puntual no es sin riesgo: se mira y se verifica
    qué más usa lo tocado; si lo puntual crece, se abre la ficha ahí mismo.
 3. **Lo que se afirma sin evidencia cuenta como no hecho.** Y el último hito, *integrado*, lo marca
-   una persona, nunca el agente.
+   una persona, nunca el agente: la aceptación de olas puede delegarse por escrito (la delegación se cita);
+   *integrado*, no.
 
 > [!IMPORTANT]
 > Un cambio de tres líneas también se sale de la arquitectura si mete una **base de datos** que no es
@@ -198,8 +199,10 @@ Tres reglas atraviesan todo:
 - **Las preguntas a la persona pasan por un solo lugar**, agrupadas por proyecto y objetivo; la
   coordinadora no hace de cartero ni responde por la persona.
 - **Integrar con otro frente a medias** en el mismo árbol: se commitean sólo los archivos del frente
-  entregado y se compila desde una copia limpia; la regresión ajena se le avisa a su dueño y no frena
-  la entrega.
+  entregado y, si hace falta aislar, se compila desde una copia limpia (un worktree sólo cuando de verdad
+  hace falta); la regresión ajena se le avisa a su dueño y no frena la entrega.
+- **Un agente sin skills ni hooks (por ejemplo Kiro)** no ve esta skill: las reglas que necesita van en su
+  encargo.
 - **Pedidos nuevos durante una ola**: si tocan un frente en curso, se suman a su ficha con fecha y cita
   textual; si no, van a un frente libre.
 - **«Achicar» no es rediseñar**: un ajuste visual parte de la versión anterior del componente y sólo
@@ -211,9 +214,10 @@ El detalle está en las secciones 6 y 8 de [`skills/fdd/SKILL.md`](skills/fdd/SK
 
 ## Lo medido
 
-Piloto en Lienzo (2026-10-26, repositorio privado): dos sesiones nuevas de Codex,
-con el mismo modelo y de a una, contestaron las mismas cinco preguntas para retomar una feature ya
-implementada. Una tenía el mapa del dominio y la otra no.
+Piloto en Lienzo (2026-10-26, repositorio privado), **una sola corrida por condición**: dos sesiones nuevas
+de Codex, con el mismo modelo y de a una, contestaron las mismas cinco preguntas para retomar una feature ya
+implementada. Una tenía el mapa del dominio y la otra no. Es un primer indicio, no una medición estable: no
+se repitió ni se comparó contra otras bases.
 
 | | 🗺️ con mapa | sin mapa | diferencia |
 |---|---:|---:|---:|
@@ -222,7 +226,7 @@ implementada. Una tenía el mapa del dominio y la otra no.
 | Comandos para explorar | 4 | 8 | **−50 %** |
 | Respuestas correctas | 5/5 | 5/5 | igual |
 
-Con el mapa, la misma comprensión costó casi la mitad.
+Con el mapa, en esa corrida, la misma comprensión costó casi la mitad.
 
 ## Cómo se ve una ficha
 
@@ -342,6 +346,7 @@ dan por verificadas.
 
 ## Cambios
 
+- **2.5** (2026-11-07) · Decisiones de Ariel al adaptar FDD a Lienzo y Factory: la persona acepta las olas salvo delegación escrita que se cita, y la delegación no alcanza al hito *integrado*; las olas tienen dos fuentes (si el texto del objetivo trae olas, son el punto de partida y manda la propuesta que la persona acepta); publicar y pasar a producción sólo como excepción por objetivo (en Lienzo, «Release al final»), si no se propone y espera; copia limpia (worktree) sólo si hace falta aislar y commit sólo de los archivos del frente; «un objetivo por proyecto» se aplica por repo; un agente sin skills ni hooks recibe las reglas en el encargo; el −43 % de tokens se rotula como piloto de una corrida; figuras con la jerarquía Proyecto → Objetivo → Feature → Ola → Tarea.
 - **2.4** (2026-11-05) · Pedido de Ariel: cada feature es un corte vertical; la arquitectura y los patrones de diseño crecen de a poco con las features; diseñar todo antes es cascada y SDD es cascada.
 - **2.3** (2026-11-05) · Video de Eric Risco sobre SDD, ODD, FTD y ASDD, revisado con Fable: puntual no es sin riesgo y clasificar mal no exime, un adjetivo no es un criterio, decisiones que esperan a la persona en la ficha y el informe, la ola cierra sobre el árbol integrado actual; la skill pasa a tres reglas de fondo, como el README.
 - **2.2** (2026-11-05) · Lecciones de uso: reconciliar el plan con lo ya hecho antes de lanzar un objetivo, el objetivo de la coordinadora sigue la ola en curso, las pruebas nunca tocan el estado real de la máquina y una falla no se atribuye sin línea de base.
